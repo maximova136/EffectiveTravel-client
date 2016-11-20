@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.client.LoginActivity">
+    tools:context="com.example.client.com.com.et.gui.LoginActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -22,7 +22,8 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="false">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -30,14 +31,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <AutoCompleteTextView
-                android:id="@+id/email"
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
-                android:maxLines="1"
-                />
+                android:ems="10"
+                android:id="@+id/login"
+                android:hint="@string/prompt_login"
+                android:text="admin" />
 
             <EditText
                 android:id="@+id/password"
@@ -49,16 +50,36 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                 />
+                android:text="admin" />
 
             <Button
-                android:id="@+id/email_sign_in_button"
-                style="?android:textAppearanceSmall"
+                android:id="@+id/sign_in_button"
+                style="@style/Widget.AppCompat.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
-                android:textStyle="bold" />
+                android:fontFamily="sans-serif-medium"
+                android:textSize="14sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:text="@string/no_account_q"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/noAccQuestionLabel"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textAlignment="center" />
+
+            <Button
+                android:text="@string/action_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/register_button"
+                style="@style/Widget.AppCompat.Button" />
 
         </LinearLayout>
     </ScrollView>
