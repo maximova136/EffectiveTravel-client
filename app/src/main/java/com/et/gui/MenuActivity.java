@@ -16,15 +16,5 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        Button petuhButton = (Button) findViewById(R.id.PetuhButton);
-        petuhButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Hello pidor", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(MenuActivity.this, MenuActivity.class);
-//                startActivity(intent);
-//                attemptLogin();
-            }
-        });
     }
 }
