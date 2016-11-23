@@ -53,7 +53,7 @@ public class LoginActivity extends Activity {
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                if (id == R.id.new_login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -66,6 +66,14 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        Button signUpButton = (Button) findViewById(R.id.register_button);
+        signUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
             }
         });
 
@@ -94,6 +102,8 @@ public class LoginActivity extends Activity {
         // Store values at the time of the login attempt.
         String login = mLoginView.getText().toString();
         String password = mPasswordView.getText().toString();
+        login.trim();
+        password.trim();
 
         boolean cancel = false;
         View focusView = null;

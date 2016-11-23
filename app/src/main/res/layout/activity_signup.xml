@@ -10,4 +10,41 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.et.gui.SignupActivity">
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/signup_progress"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/signup_view">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:id="@+id/new_login"
+            android:hint="@string/prompt_login" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/new_password"
+            android:hint="@string/prompt_password" />
+
+        <Button
+            android:text="@string/action_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/commit_signup" />
+    </LinearLayout>
 </RelativeLayout>

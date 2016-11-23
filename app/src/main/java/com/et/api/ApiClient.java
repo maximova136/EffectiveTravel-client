@@ -4,6 +4,9 @@ package com.et.api;
 import android.util.Log;
 
 import com.et.exception.LoginFailed;
+import com.et.exception.SignupFailed;
+import com.et.responses.SignupResponse;
+import com.et.responses.TokenResponse;
 
 import java.io.IOException;
 
@@ -59,5 +62,28 @@ public class ApiClient {
             Log.d("ApiClient", "Exception caught while sending request.");
             throw new LoginFailed();
         }
+    }
+
+
+    public String signup(String login, String password) throws SignupFailed {
+        Call<SignupResponse> req = service.registration(new LoginBody(login, password));
+        Log.d("ApiClient", "About to send sign up request.");
+
+        try {
+            Log.d("ApiClient", "Sending sing up request to server...");
+            Response<SignupResponse> resp = req.execute();
+            Log.d("ApiClient", "Sending sing up request to server... done");
+            if(resp.body().isSuccess()) {
+                return resp.body().getToken();
+            }
+            else {
+                throw new SignupFailed();
+            }
+        }
+        catch (IOException e) {
+            Log.d("ApiClient", "Exception caught while sending sign up request.");
+            throw new SignupFailed();
+        }
+
     }
 }

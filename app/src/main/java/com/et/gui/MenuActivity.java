@@ -10,7 +10,11 @@ import android.widget.Toast;
 
 import com.et.R;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends BaseActivity {
+
+    public MenuActivity() {
+        super(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

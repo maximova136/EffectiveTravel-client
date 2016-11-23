@@ -1,4 +1,4 @@
-package com.et.api;
+package com.et.responses;
 
 import java.util.HashMap;
 import java.util.Map;
