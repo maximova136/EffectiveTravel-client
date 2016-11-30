@@ -1,20 +1,13 @@
 package com.et.gui;
-import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.et.R;
 import com.et.api.Routes;
-import com.et.exception.FetchRoutesException;
-import com.et.responses.RouteObject;
+import com.et.exception.FetchException;
 
 
 public class TestActivity extends BaseActivity {
@@ -47,7 +40,7 @@ public class TestActivity extends BaseActivity {
             try {
                 return routes.load();
             }
-            catch (FetchRoutesException e) {
+            catch (FetchException e) {
                 Log.e("SSSSSS", "SOOQA");
                 e.printStackTrace();
                 return false;

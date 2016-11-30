@@ -2,7 +2,7 @@ package com.et.tests;
 
 import com.et.api.Auth;
 import com.et.api.Routes;
-import com.et.exception.FetchRoutesException;
+import com.et.exception.FetchException;
 import com.et.responses.RouteObject;
 
 import static org.junit.Assert.assertThat;
@@ -40,7 +40,7 @@ public class TestRoutes {
             }
 
         }
-        catch (FetchRoutesException e) {
+        catch (FetchException e) {
             Assert.fail("Failed to fetch routes. Message: " + e.getMessage());
         }
     }

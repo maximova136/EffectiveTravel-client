@@ -3,6 +3,7 @@ package com.et.api;
 import com.et.requestbody.LoginBody;
 import com.et.responses.RoutesResponse;
 import com.et.responses.SignupResponse;
+import com.et.responses.StationsResponse;
 import com.et.responses.TokenResponse;
 
 import retrofit2.Call;
@@ -22,5 +23,5 @@ public interface EffectiveTravelServerApi {
     Call<RoutesResponse> routes(@Header("Authorization") String token);
 
     @GET("/api/stations")
-    Call<RoutesResponse> stations();
+    Call<StationsResponse> stations(@Header("Authorization") String token);
 }

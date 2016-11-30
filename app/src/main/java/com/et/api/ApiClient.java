@@ -3,13 +3,17 @@ package com.et.api;
 
 import android.util.Log;
 
-import com.et.exception.FetchRoutesException;
+import com.et.exception.BadResponseException;
+import com.et.exception.FetchException;
 import com.et.exception.LoginFailed;
 import com.et.exception.SignupFailed;
 import com.et.requestbody.LoginBody;
+import com.et.responses.BaseResponse;
 import com.et.responses.RouteObject;
 import com.et.responses.RoutesResponse;
 import com.et.responses.SignupResponse;
+import com.et.responses.StationObject;
+import com.et.responses.StationsResponse;
 import com.et.responses.TokenResponse;
 
 import java.io.IOException;
@@ -93,7 +97,7 @@ public class ApiClient {
         }
     }
 
-    public List<RouteObject> routes() throws FetchRoutesException {
+    public List<RouteObject> routes() throws FetchException {
         Call<RoutesResponse> req = service.routes("JWT " + Auth.getToken());
 //        Log.d(TAG, "About to fetch routes list from server. Authorization: " + "JWT " + Auth.getToken());
         try {
@@ -106,29 +110,42 @@ public class ApiClient {
                 return response.body().getRoutes();
             }
             else {
-                throw new FetchRoutesException("EXAMPLE_ERROR_CODE");
+                throw new FetchException("EXAMPLE_ERROR_CODE");
             }
         }
         catch (RuntimeException e) {
 //            Log.e(TAG, "Error " + e.getMessage());
             e.printStackTrace();
-            throw new FetchRoutesException(e);
+            throw new FetchException(e);
 
         }
         catch (IOException e) {
             e.printStackTrace();
-            throw new FetchRoutesException(e);
+            throw new FetchException(e);
         }
-        catch (FetchRoutesException e) {
+        catch (FetchException e) {
             e.printStackTrace();
             throw e;
         }
         catch (Exception e) {
             e.printStackTrace();
-            throw new FetchRoutesException(e);
+            throw new FetchException(e);
         }
-//        finally {
-//            throw new FetchRoutesException("GFYS");
-//        }
+    }
+
+    public List<StationObject> stations() throws FetchException, BadResponseException {
+        try {
+            Call<StationsResponse> request = service.stations("JWT " + Auth.getToken());
+            Response<StationsResponse> response = request.execute();
+            if(response.body().isSuccess()) {
+                return response.body().getStations();
+            }
+            else {
+                throw new BadResponseException();
+            }
+        }
+        catch (IOException e) {
+            throw new FetchException(e);
+        }
     }
 }

@@ -1,9 +1,7 @@
 package com.et.api;
 
 
-import android.util.Log;
-
-import com.et.exception.FetchRoutesException;
+import com.et.exception.FetchException;
 import com.et.responses.RouteObject;
 
 import java.util.List;
@@ -20,13 +18,13 @@ public class Routes {
         }
     }
 
-    public boolean load() throws FetchRoutesException {
+    public boolean load() throws FetchException {
 //        if(!loadFromLocalDb()) {
             try {
                 fetchFromServer();
                 return true;
             }
-            catch (FetchRoutesException e) {
+            catch (FetchException e) {
                 e.printStackTrace();
 //                Log.e(TAG, "Failed to fetch routes from server. Error: " + e.getMessage());
                 throw e;
@@ -36,7 +34,7 @@ public class Routes {
 //        return true;
     }
 
-    private void fetchFromServer() throws FetchRoutesException {
+    private void fetchFromServer() throws FetchException {
         this.routes = client.routes();
 //        Log.i(TAG, "RN: " + routes.size());
     }
