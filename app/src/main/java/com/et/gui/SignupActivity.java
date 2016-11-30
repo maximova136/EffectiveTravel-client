@@ -19,7 +19,7 @@ import com.et.R;
 import com.et.api.Auth;
 import com.et.exception.SignupFailed;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends BaseActivity {
 
     private SignUpTask signUpTask;
 
@@ -29,6 +29,10 @@ public class SignupActivity extends AppCompatActivity {
     private View     mSignUpFormView;
 
     private Auth auth;
+
+    public SignupActivity() {
+        super(false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +165,7 @@ public class SignupActivity extends AppCompatActivity {
             showProgress(false);
 
             if(success) {
+                setToken(Auth.getToken());
                 startActivity(new Intent(SignupActivity.this, MenuActivity.class));
             }
             else {

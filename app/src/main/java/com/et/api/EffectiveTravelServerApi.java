@@ -1,5 +1,6 @@
 package com.et.api;
 
+import com.et.requestbody.LoginBody;
 import com.et.responses.RoutesResponse;
 import com.et.responses.SignupResponse;
 import com.et.responses.TokenResponse;
@@ -7,6 +8,7 @@ import com.et.responses.TokenResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface EffectiveTravelServerApi {
@@ -17,5 +19,8 @@ public interface EffectiveTravelServerApi {
     Call<SignupResponse> registration(@Body LoginBody login_password);
 
     @GET("api/routes")
-    Call<RoutesResponse> routes();
+    Call<RoutesResponse> routes(@Header("Authorization") String token);
+
+    @GET("/api/stations")
+    Call<RoutesResponse> stations();
 }

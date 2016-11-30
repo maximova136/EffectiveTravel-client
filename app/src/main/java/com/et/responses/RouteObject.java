@@ -4,10 +4,10 @@ package com.et.responses;
 
 
 public class RouteObject {
-    private int r_id;
-    private String title;
-    private int cost;
-    private String transport_type;
+    int r_id;
+    String title;
+    int cost;
+    String transport_type;
 
     public int getR_id() {
         return r_id;
@@ -40,4 +40,6 @@ public class RouteObject {
     public void setTransport_type(String transport_type) {
         this.transport_type = transport_type;
     }
+
+    public String toString() { return "r_id: " + r_id + " " + transport_type + " " + title; }
 }

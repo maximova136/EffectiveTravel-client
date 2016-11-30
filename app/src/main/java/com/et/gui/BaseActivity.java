@@ -2,17 +2,17 @@ package com.et.gui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
+
 import com.et.R;
+import com.et.api.Auth;
 
-
-/**
- * Created by glaux on 23.11.16.
- */
 
 public class BaseActivity extends Activity {
-    private boolean requiresToken = false;
+    private static String TAG = "BaseActivity";
+
+    protected boolean requiresToken = false;
 
     public BaseActivity(boolean requiresToken) {
         this.requiresToken = requiresToken;
@@ -24,24 +24,17 @@ public class BaseActivity extends Activity {
 
 
     public void setToken(String token) {
-
+        Log.i(TAG, "Saving token(" + token + ") ...");
+        SharedPreferences prefs = this.getSharedPreferences(getString(R.string.preferences_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("token", token);
+        editor.commit();
     }
 
     public String getToken() {
         SharedPreferences prefs = this.getSharedPreferences(getString(R.string.preferences_file_key), Context.MODE_PRIVATE);
         String token = prefs.getString("token", "");
+        Auth.setToken(token);
         return token;
-    }
-
-
-    @Override
-    protected void onResume() {
-        if(this.requiresToken && !checkToken()) {
-            Intent transitionToLogin = new Intent(this, LoginActivity.class);
-            startActivity(transitionToLogin);
-            return;
-        }
-
-        super.onResume();
     }
 }

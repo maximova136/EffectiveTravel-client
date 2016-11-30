@@ -26,7 +26,7 @@ import com.et.api.Auth;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -41,6 +41,10 @@ public class LoginActivity extends Activity {
 
     private Auth                    auth;
 
+
+    public LoginActivity() {
+        super(false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,12 +195,8 @@ public class LoginActivity extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            try {
-                Log.i("LoginActivity", "Trying to login.");
-                return auth.login(mLogin, mPassword);
-            } catch (Exception e) {
-                return false;
-            }
+            Log.i("LoginActivity", "Trying to login.");
+            return auth.login(mLogin, mPassword);
         }
 
         @Override
@@ -205,6 +205,7 @@ public class LoginActivity extends Activity {
             showProgress(false);
 
             if (success) {
+                setToken(Auth.getToken());
                 Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
                 startActivity(intent);
             } else {

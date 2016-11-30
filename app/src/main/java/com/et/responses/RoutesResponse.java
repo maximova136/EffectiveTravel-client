@@ -6,7 +6,7 @@ import java.util.List;
 
 public class RoutesResponse extends BaseResponse {
 
-    protected List<RouteObject> routes;
+    List<RouteObject> routes;
 
     public List<RouteObject> getRoutes() {
         return routes;

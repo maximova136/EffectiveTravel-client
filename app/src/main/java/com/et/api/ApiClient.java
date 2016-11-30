@@ -3,12 +3,17 @@ package com.et.api;
 
 import android.util.Log;
 
+import com.et.exception.FetchRoutesException;
 import com.et.exception.LoginFailed;
 import com.et.exception.SignupFailed;
+import com.et.requestbody.LoginBody;
+import com.et.responses.RouteObject;
+import com.et.responses.RoutesResponse;
 import com.et.responses.SignupResponse;
 import com.et.responses.TokenResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -17,6 +22,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
+    private static String TAG = "ApiClient";
+
     public static final String BASE_URL = "https://busstat-server.herokuapp.com/";
 
     private Retrofit retrofit;
@@ -33,7 +40,7 @@ public class ApiClient {
     }
 
     private ApiClient() {
-        Log.d("ApiClient", "Create client");
+//        Log.d("ApiClient", "Create client");
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiClient.BASE_URL)
@@ -42,24 +49,24 @@ public class ApiClient {
                 .build();
 
         service = retrofit.create(EffectiveTravelServerApi.class);
-        Log.d("ApiClient", "Create client .. done");
+//        Log.d("ApiClient", "Create client .. done");
     }
 
     public String login(String login, String password) throws LoginFailed {
         Call<TokenResponse> req = service.token(new LoginBody(login, password));
-        Log.d("ApiClient", "About to send request.");
+//        Log.d("ApiClient", "About to send request.");
 
         try {
-            Log.d("ApiClient", "Sending request to server...");
+//            Log.d("ApiClient", "Sending request to server...");
             Response<TokenResponse> response = req.execute();
-            Log.d("ApiClient", "Sending request to server... done");
-            if(response.body().getSuccess())
+//            Log.d("ApiClient", "Sending request to server... done");
+            if(response.body().isSuccess())
                 return response.body().getToken();
             else
                 throw new LoginFailed();
         }
         catch (IOException e) {
-            Log.d("ApiClient", "Exception caught while sending request.");
+//            Log.d("ApiClient", "Exception caught while sending request.");
             throw new LoginFailed();
         }
     }
@@ -84,6 +91,44 @@ public class ApiClient {
             Log.d("ApiClient", "Exception caught while sending sign up request.");
             throw new SignupFailed();
         }
+    }
 
+    public List<RouteObject> routes() throws FetchRoutesException {
+        Call<RoutesResponse> req = service.routes("JWT " + Auth.getToken());
+//        Log.d(TAG, "About to fetch routes list from server. Authorization: " + "JWT " + Auth.getToken());
+        try {
+//            Log.d(TAG, "Fetching routes from server...");
+            Response<RoutesResponse> response = req.execute();
+//            Log.d(TAG, "Fetching routes from server... done");
+            if(response.body().isSuccess()) {
+//                int i = response.body().getRoutes().size();
+//                Log.i(TAG, "Number of routes: " + response.body().getAdditionalProperties().toString());
+                return response.body().getRoutes();
+            }
+            else {
+                throw new FetchRoutesException("EXAMPLE_ERROR_CODE");
+            }
+        }
+        catch (RuntimeException e) {
+//            Log.e(TAG, "Error " + e.getMessage());
+            e.printStackTrace();
+            throw new FetchRoutesException(e);
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            throw new FetchRoutesException(e);
+        }
+        catch (FetchRoutesException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new FetchRoutesException(e);
+        }
+//        finally {
+//            throw new FetchRoutesException("GFYS");
+//        }
     }
 }
