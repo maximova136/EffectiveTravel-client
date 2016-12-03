@@ -1,4 +1,6 @@
-package com.et.responses;
+package com.et.response;
+
+import com.et.response.object.StationObject;
 
 import java.util.List;
 

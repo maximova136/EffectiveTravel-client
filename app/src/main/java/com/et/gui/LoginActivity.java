@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.app.Activity;
 
 import android.os.AsyncTask;
 
@@ -21,7 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.et.R;
-import com.et.api.Auth;
+import com.et.auth.Auth;
 
 /**
  * A login screen that offers login via email/password.

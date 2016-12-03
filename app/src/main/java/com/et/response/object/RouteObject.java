@@ -1,4 +1,4 @@
-package com.et.responses;
+package com.et.response.object;
 
 
 
@@ -41,5 +41,5 @@ public class RouteObject {
         this.transport_type = transport_type;
     }
 
-    public String toString() { return "r_id: " + r_id + " " + transport_type + " " + title; }
+    public String toString() { return "r_id:" + r_id + " Type:" + transport_type + " Title:" + title + " Cost:" + cost; }
 }

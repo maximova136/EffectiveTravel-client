@@ -1,4 +1,4 @@
-package com.et.responses;
+package com.et.response;
 
 /**
  * Created by glaux on 23.11.16.

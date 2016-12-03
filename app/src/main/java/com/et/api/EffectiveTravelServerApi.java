@@ -1,10 +1,10 @@
 package com.et.api;
 
-import com.et.requestbody.LoginBody;
-import com.et.responses.RoutesResponse;
-import com.et.responses.SignupResponse;
-import com.et.responses.StationsResponse;
-import com.et.responses.TokenResponse;
+import com.et.request.body.LoginBody;
+import com.et.response.RoutesResponse;
+import com.et.response.SignupResponse;
+import com.et.response.StationsResponse;
+import com.et.response.TokenResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,4 +24,7 @@ public interface EffectiveTravelServerApi {
 
     @GET("/api/stations")
     Call<StationsResponse> stations(@Header("Authorization") String token);
+
+//    @POST("/api/notes/{s_id}/{r_id}")
+//    Call<StationsResponse> addNote(@Header("Authorization") String token);
 }

@@ -1,4 +1,4 @@
-package com.et.responses;
+package com.et.response;
 
 import java.util.Map;
 

@@ -1,18 +1,14 @@
 package com.et.gui;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
 import com.et.R;
-import com.et.api.Auth;
-
-import junit.framework.Test;
+import com.et.auth.Auth;
 
 public class MenuActivity extends BaseActivity {
     private static String TAG = "MenuActivity";

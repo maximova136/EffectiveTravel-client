@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.et.R;
-import com.et.api.Auth;
+import com.et.auth.Auth;
 
 
 public class BaseActivity extends Activity {

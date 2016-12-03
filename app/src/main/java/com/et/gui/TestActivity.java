@@ -1,25 +1,19 @@
 package com.et.gui;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.et.R;
-import com.et.api.Routes;
-import com.et.exception.FetchException;
 
 
 public class TestActivity extends BaseActivity {
 
-    private Routes routes;
     private TextView text;
     private TestAsynkTask task;
 
     public TestActivity() {
         super(true);
-
-        routes = new Routes();
     }
 
     @Override
@@ -37,14 +31,7 @@ public class TestActivity extends BaseActivity {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            try {
-                return routes.load();
-            }
-            catch (FetchException e) {
-                Log.e("SSSSSS", "SOOQA");
-                e.printStackTrace();
                 return false;
-            }
         }
 
         @Override

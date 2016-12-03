@@ -1,4 +1,4 @@
-package com.et.requestbody;
+package com.et.request.body;
 
 
 

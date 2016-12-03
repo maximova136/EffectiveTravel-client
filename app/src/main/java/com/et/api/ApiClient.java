@@ -1,20 +1,18 @@
 package com.et.api;
 
 
-import android.util.Log;
-
-import com.et.exception.BadResponseException;
-import com.et.exception.FetchException;
-import com.et.exception.LoginFailed;
-import com.et.exception.SignupFailed;
-import com.et.requestbody.LoginBody;
-import com.et.responses.BaseResponse;
-import com.et.responses.RouteObject;
-import com.et.responses.RoutesResponse;
-import com.et.responses.SignupResponse;
-import com.et.responses.StationObject;
-import com.et.responses.StationsResponse;
-import com.et.responses.TokenResponse;
+import com.et.auth.Auth;
+import com.et.exception.api.InsuccessfulResponseException;
+import com.et.exception.api.RequestFailedException;
+import com.et.exception.api.LoginFailedException;
+import com.et.exception.api.SignupFailedException;
+import com.et.request.body.LoginBody;
+import com.et.response.object.RouteObject;
+import com.et.response.RoutesResponse;
+import com.et.response.SignupResponse;
+import com.et.response.object.StationObject;
+import com.et.response.StationsResponse;
+import com.et.response.TokenResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,15 +23,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiClient {
-    private static String TAG = "ApiClient";
+public class ApiClient implements IApiClient {
+    private static ApiClient inst = null;
 
     public static final String BASE_URL = "https://busstat-server.herokuapp.com/";
 
     private Retrofit retrofit;
     private EffectiveTravelServerApi service;
 
-    private static ApiClient inst = null;
 
 
     public static ApiClient instance() {
@@ -43,9 +40,9 @@ public class ApiClient {
         return inst;
     }
 
-    private ApiClient() {
-//        Log.d("ApiClient", "Create client");
 
+
+    private ApiClient() {
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiClient.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -53,99 +50,79 @@ public class ApiClient {
                 .build();
 
         service = retrofit.create(EffectiveTravelServerApi.class);
-//        Log.d("ApiClient", "Create client .. done");
     }
 
-    public String login(String login, String password) throws LoginFailed {
-        Call<TokenResponse> req = service.token(new LoginBody(login, password));
-//        Log.d("ApiClient", "About to send request.");
 
+
+    @Override
+    public String login(String login, String password) throws LoginFailedException {
+        Call<TokenResponse> req = service.token(new LoginBody(login, password));
         try {
-//            Log.d("ApiClient", "Sending request to server...");
             Response<TokenResponse> response = req.execute();
-//            Log.d("ApiClient", "Sending request to server... done");
             if(response.body().isSuccess())
                 return response.body().getToken();
             else
-                throw new LoginFailed();
+                throw new LoginFailedException("Bad login or password");
         }
         catch (IOException e) {
-//            Log.d("ApiClient", "Exception caught while sending request.");
-            throw new LoginFailed();
+            throw new LoginFailedException(e);
         }
     }
 
 
-    public String signup(String login, String password) throws SignupFailed {
-        Call<SignupResponse> req = service.registration(new LoginBody(login, password));
-        Log.d("ApiClient", "About to send sign up request.");
 
+    @Override
+    public String signup(String login, String password) throws SignupFailedException {
+        Call<SignupResponse> req = service.registration(new LoginBody(login, password));
         try {
-            Log.d("ApiClient", "Sending sing up request to server...");
             Response<SignupResponse> resp = req.execute();
-            Log.d("ApiClient", "Sending sing up request to server... done");
             if(resp.body().isSuccess()) {
                 return resp.body().getToken();
             }
             else {
-                throw new SignupFailed();
+                throw new SignupFailedException("Impossible to create account with specified login/password");
             }
         }
         catch (IOException e) {
-            Log.d("ApiClient", "Exception caught while sending sign up request.");
-            throw new SignupFailed();
+            throw new SignupFailedException(e);
         }
     }
 
-    public List<RouteObject> routes() throws FetchException {
-        Call<RoutesResponse> req = service.routes("JWT " + Auth.getToken());
-//        Log.d(TAG, "About to fetch routes list from server. Authorization: " + "JWT " + Auth.getToken());
+
+
+    @Override
+    public List<RouteObject> routes() throws RequestFailedException, InsuccessfulResponseException {
         try {
-//            Log.d(TAG, "Fetching routes from server...");
-            Response<RoutesResponse> response = req.execute();
-//            Log.d(TAG, "Fetching routes from server... done");
+            Call<RoutesResponse> request = service.routes(Auth.getHeaderField());
+            Response<RoutesResponse> response = request.execute();
             if(response.body().isSuccess()) {
-//                int i = response.body().getRoutes().size();
-//                Log.i(TAG, "Number of routes: " + response.body().getAdditionalProperties().toString());
                 return response.body().getRoutes();
             }
             else {
-                throw new FetchException("EXAMPLE_ERROR_CODE");
+                throw new InsuccessfulResponseException("Failed to fetch routes from server.");
             }
         }
-        catch (RuntimeException e) {
-//            Log.e(TAG, "Error " + e.getMessage());
-            e.printStackTrace();
-            throw new FetchException(e);
-
-        }
         catch (IOException e) {
-            e.printStackTrace();
-            throw new FetchException(e);
-        }
-        catch (FetchException e) {
-            e.printStackTrace();
-            throw e;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            throw new FetchException(e);
+            throw new RequestFailedException(e);
         }
     }
 
-    public List<StationObject> stations() throws FetchException, BadResponseException {
+
+
+    @Override
+    public List<StationObject> stations() throws RequestFailedException, InsuccessfulResponseException {
         try {
-            Call<StationsResponse> request = service.stations("JWT " + Auth.getToken());
+            Call<StationsResponse> request = service.stations(Auth.getHeaderField());
             Response<StationsResponse> response = request.execute();
             if(response.body().isSuccess()) {
                 return response.body().getStations();
             }
             else {
-                throw new BadResponseException();
+                throw new InsuccessfulResponseException("Failed to fetch stations from server");
             }
         }
         catch (IOException e) {
-            throw new FetchException(e);
+            throw new RequestFailedException(e);
         }
     }
 }

@@ -1,7 +1,4 @@
-package com.et.responses;
-
-import java.util.HashMap;
-import java.util.Map;
+package com.et.response;
 
 public class TokenResponse extends BaseResponse {
 
