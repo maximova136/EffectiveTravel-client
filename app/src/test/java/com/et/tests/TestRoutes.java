@@ -17,6 +17,7 @@ import com.et.routes.RouteStorage;
 import com.et.routes.TransportRoutes;
 import com.et.storage.ILocalStorage;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -81,14 +82,20 @@ public class TestRoutes {
     }
 
     private class MockLocalStorage implements ILocalStorage {
-        private ArrayList<RouteObject> list;
+        public ArrayList<RouteObject> list;
+        public ArrayList<RouteObject> savedList;
+
+        public boolean clearDbCalled = false;
 
         public MockLocalStorage() {
-            list = new ArrayList<RouteObject>();
+            savedList = new ArrayList<>();
+            list = new ArrayList<>();
         }
 
         public void clear() {
+            savedList.clear();
             list.clear();
+            clearDbCalled = false;
         }
 
         public void put(RouteObject route) {
@@ -99,6 +106,14 @@ public class TestRoutes {
         public void putObject(String collection, HashMap<String, String> values) throws PutObjectFailed {
             if(collection != RouteStorage.COLLECTION_NAME)
                 throw new PutObjectFailed("Incorrect collection name");
+
+            RouteObject r = new RouteObject();
+            r.setR_id(Integer.parseInt(values.get(RouteStorage.R_ID_KEY)));
+            r.setTransport_type(values.get(RouteStorage.TYPE_KEY));
+            r.setTitle(values.get(RouteStorage.TITLE_KEY));
+            r.setCost(Integer.parseInt(values.get(RouteStorage.COST_KEY)));
+
+            savedList.add(r);
         }
 
         @Override
@@ -112,6 +127,13 @@ public class TestRoutes {
             if(collection != RouteStorage.COLLECTION_NAME)
                 throw new DeleteObjectFailed("Incorrect collection name");
 
+        }
+
+        @Override
+        public void clearStorage() throws DeleteObjectFailed {
+            list.clear();
+            savedList.clear();
+            clearDbCalled = true;
         }
 
         @Override
@@ -174,6 +196,8 @@ public class TestRoutes {
         r.setCost(33);
         mockLocalStorage.put(r);
 
+        assertFalse("Local routes list should not be cleared", mockLocalStorage.clearDbCalled);
+
         assertTrue("Failed to load routes from local storage", routes.load());
         assertTrue("One route", routes.getAll().size() == 1);
 
@@ -189,7 +213,7 @@ public class TestRoutes {
 
 
     @Test
-    public void fetchLocally() {
+    public void fetchLocallyAndSave() {
         TransportRoutes routes = new TransportRoutes(mockApiClient, mockLocalStorage);
 
         // Put test route to mock storage
@@ -202,14 +226,22 @@ public class TestRoutes {
         mockApiClient.setFailVariant(0);
 
         assertTrue("Failed to fetch routes from mock client", routes.load());
-        assertTrue("One route", routes.getAll().size() == 1);
+        assertTrue("Local routes list should be cleaned before save", mockLocalStorage.clearDbCalled);
+        assertTrue("One route fetched", routes.getAll().size() == 1);
+        assertTrue("One route saved", mockLocalStorage.savedList.size() == 1);
 
         RouteObject loadedRoute = routes.getAll().get(0);
+        RouteObject savedRoute = mockLocalStorage.savedList.get(0);
 
         assertTrue("Not the same r_id",  loadedRoute.getR_id() == r.getR_id());
         assertTrue("Not the same cost",  loadedRoute.getCost() == r.getCost());
         assertTrue("Not the same title", loadedRoute.getTitle().equals(r.getTitle()));
         assertTrue("Not the same type",  loadedRoute.getTransport_type().equals(r.getTransport_type()));
+
+        assertTrue("Not the same r_id",  savedRoute.getR_id() == r.getR_id());
+        assertTrue("Not the same cost",  savedRoute.getCost() == r.getCost());
+        assertTrue("Not the same title", savedRoute.getTitle().equals(r.getTitle()));
+        assertTrue("Not the same type",  savedRoute.getTransport_type().equals(r.getTransport_type()));
     }
 
 

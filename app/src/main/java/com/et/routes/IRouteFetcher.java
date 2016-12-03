@@ -7,7 +7,6 @@ import com.et.response.object.RouteObject;
 import java.util.List;
 
 
-
 public interface IRouteFetcher {
     public List<RouteObject> fetchAll() throws RequestFailedException, InsuccessfulResponseException;
 }

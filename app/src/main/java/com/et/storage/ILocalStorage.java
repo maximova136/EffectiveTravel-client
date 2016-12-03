@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface ILocalStorage {
+    public void clearStorage() throws DeleteObjectFailed;
     public void putObject(String collection, HashMap<String, String> values) throws PutObjectFailed;
     public void updateObject(String collection, int objectId, HashMap<String, String> values) throws UpdateObjectFailed;
     public void deleteObject(String collection, int objectId) throws DeleteObjectFailed;

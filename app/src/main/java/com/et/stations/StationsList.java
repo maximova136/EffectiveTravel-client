@@ -2,9 +2,11 @@ package com.et.stations;
 
 
 import com.et.api.ApiClient;
+import com.et.api.IApiClient;
 import com.et.exception.api.InsuccessfulResponseException;
 import com.et.exception.api.RequestFailedException;
 import com.et.response.object.StationObject;
+import com.et.storage.ILocalStorage;
 
 import java.util.List;
 
@@ -14,8 +16,9 @@ public class StationsList implements IStationsProvider {
 
     private List<StationObject> stations;
 
-    public StationsList() {
-        fetcher = new StationsFetcher(ApiClient.instance());
+    public StationsList(IApiClient client, ILocalStorage localStorage) {
+        fetcher = new StationsFetcher(client);
+        storage = new StationsStorage(localStorage);
     }
 
     public boolean load() {
@@ -26,6 +29,7 @@ public class StationsList implements IStationsProvider {
                 return true;
             }
             catch(InsuccessfulResponseException e) {
+                e.printStackTrace();
                 return false;
             }
             catch (RequestFailedException e) {
@@ -34,15 +38,18 @@ public class StationsList implements IStationsProvider {
             }
         }
         else {
-            return false;
+            return true;
         }
     }
 
     private boolean loadFromDb() {
-        return false;
+        stations = storage.load();
+        return stations != null;
     }
 
-    private void saveToDb() {  }
+    private boolean saveToDb() {
+        return storage.save(stations);
+    }
 
     @Override
     public List<StationObject> getAll() {

@@ -11,6 +11,11 @@ import java.util.List;
 
 public class AppSQliteDb implements ILocalStorage {
     @Override
+    public void clearStorage() throws DeleteObjectFailed {
+
+    }
+
+    @Override
     public void putObject(String collection, HashMap<String, String> values) throws PutObjectFailed {
 
     }

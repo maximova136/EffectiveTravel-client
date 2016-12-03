@@ -1,6 +1,8 @@
 package com.et.routes;
 
+import com.et.exception.storage.DeleteObjectFailed;
 import com.et.exception.storage.LoadCollectionFailed;
+import com.et.exception.storage.PutObjectFailed;
 import com.et.response.object.RouteObject;
 import com.et.storage.ILocalStorage;
 
@@ -27,7 +29,25 @@ public class RouteStorage implements IRouteStorage {
 
     @Override
     public boolean save(List<RouteObject> routes) {
-        return false;
+        try {
+            storage.clearStorage();
+
+            for (RouteObject r : routes) {
+                HashMap<String, String> item = new HashMap<>();
+                item.put(R_ID_KEY,  "" + r.getR_id());
+                item.put(TITLE_KEY, "" + r.getTitle());
+                item.put(TYPE_KEY,  "" + r.getTransport_type());
+                item.put(COST_KEY,  "" + r.getCost());
+                storage.putObject(COLLECTION_NAME, item);
+            }
+            return true;
+        }
+        catch (DeleteObjectFailed e) {
+            return false;
+        }
+        catch (PutObjectFailed e) {
+            return false;
+        }
     }
 
     @Override
