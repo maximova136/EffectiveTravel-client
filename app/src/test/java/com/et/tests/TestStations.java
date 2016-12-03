@@ -255,4 +255,14 @@ public class TestStations {
         System.out.println("#####################################################################");
         System.out.println();
     }
+
+
+
+    @Test
+    public void fetchFail() {
+        StationsList stations = new StationsList(mockApiClient, mockLocalStorage);
+        mockApiClient.setFailVariant(2);
+
+        assertFalse("Load should fail", stations.load());
+    }
 }
