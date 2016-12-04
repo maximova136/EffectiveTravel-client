@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -123,11 +125,24 @@ public class StationsListActivity extends BaseActivity {
         // find the list
         stationsListView = (ListView) findViewById(R.id.stations_list);
 
+        stationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                StationObject station = (StationObject) stationsListView.getAdapter().getItem(position);
+                Log.i("ITEM STATION", station.getTitle());
+                /*Intent intent = new Intent(StationsListActivity.this, RouteListActivity.class);
+                String message = "abc";
+                intent.putExtra(EXTRA_MESSAGE, message);
+                startActivity(intent);
+*/
+            }
+        });
+
         mLoadStationTask = new StationsListActivity.StationsLoadTask(stations);
         mLoadStationTask.execute((Void) null);
     }
 
-    private void onStationSelected() {
+    private void onStationSelected(StationObject station) {
 
     }
 
@@ -154,12 +169,6 @@ public class StationsListActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            if (stations.getAll().size() > 0) {
-                System.out.println("YEEEEEEAAAAAHHHH!!!!!");
-            } else {
-                System.out.println("FFUUUUUUUCCCCKKK");
-            }
-
             // create an adapter
             StationsListAdapter adapter = new StationsListAdapter(self, stations);
             //assign the adapter to the list

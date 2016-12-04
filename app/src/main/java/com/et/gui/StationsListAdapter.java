@@ -24,7 +24,6 @@ public class StationsListAdapter extends BaseAdapter {
     StationsListAdapter(Context context, StationsList _stations) {
         ctx = context;
         stations = _stations;
-        System.out.print("SADASFASF");
         lInflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
