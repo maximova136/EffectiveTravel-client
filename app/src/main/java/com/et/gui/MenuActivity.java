@@ -54,5 +54,13 @@ public class MenuActivity extends BaseActivity {
                 startActivity(new Intent(MenuActivity.this, TestActivity.class));
             }
         });
+
+        Button transportStatsButton = (Button) findViewById(R.id.transport_stats_button);
+        transportStatsButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MenuActivity.this, StationsListActivity.class));
+            }
+        });
     }
 }

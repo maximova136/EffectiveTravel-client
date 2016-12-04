@@ -26,6 +26,7 @@
         <activity android:name=".gui.TransportStatsActivity" />
         <activity android:name=".gui.SignupActivity"></activity>
         <activity android:name=".gui.TestActivity"></activity>
+        <activity android:name=".gui.StationsListActivity"></activity>
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface ILocalStorage {
+    // TODO: rename to clearCollection(String collectionName)
     public void clearStorage() throws DeleteObjectFailed;
     public void putObject(String collection, HashMap<String, String> values) throws PutObjectFailed;
     public void updateObject(String collection, int objectId, HashMap<String, String> values) throws UpdateObjectFailed;

@@ -168,7 +168,7 @@ public class TestRoutes {
 
     @BeforeClass
     public static void setUpSuite() {
-        assertTrue(Auth.login("admin", "admin"));
+
     }
 
     @Before
@@ -251,6 +251,8 @@ public class TestRoutes {
         TransportRoutes routes = new TransportRoutes(ApiClient.instance(), mockLocalStorage);
         // Clear mock storage to force provider to fetch routes from server
         mockLocalStorage.clear();
+
+        assertTrue("can not to log in", Auth.login("admin", "admin"));
 
         assertTrue("failed to load", routes.load());
 
