@@ -138,6 +138,7 @@ public class StationsListActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 StationObject station = (StationObject) stationsListView.getAdapter().getItem(position);
                 Log.i("ITEM STATION", station.getTitle());
+                // TODO: Intent to RoutesListActivity
                 /*Intent intent = new Intent(StationsListActivity.this, RouteListActivity.class);
                 String message = "abc";
                 intent.putExtra(EXTRA_MESSAGE, message);
