@@ -30,7 +30,7 @@ public class RouteStorage implements IRouteStorage {
     @Override
     public boolean save(List<RouteObject> routes) {
         try {
-            storage.clearStorage();
+            storage.clearCollection(COLLECTION_NAME);
 
             for (RouteObject r : routes) {
                 HashMap<String, String> item = new HashMap<>();
