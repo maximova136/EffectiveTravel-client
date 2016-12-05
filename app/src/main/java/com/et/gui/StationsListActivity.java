@@ -1,20 +1,21 @@
 package com.et.gui;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.et.R;
+import com.et.adapters.StationsListAdapter;
 import com.et.api.ApiClient;
-import com.et.auth.Auth;
 import com.et.exception.storage.DeleteObjectFailed;
 import com.et.exception.storage.LoadCollectionFailed;
 import com.et.exception.storage.PutObjectFailed;
@@ -108,13 +109,20 @@ public class StationsListActivity extends BaseActivity {
     private StationsListActivity.StationsLoadTask mLoadStationTask = null;
     Context ctx;
     LayoutInflater lInflater;
+    MockLocalStorage mockLocalStorage;
+
     ListView stationsListView;
+    EditText editText;
+
+    String searchWord = "";
     StationsList stations;
     StationsListActivity self = this;
 
 
     public StationsListActivity() {
         super(true);
+        // TODO: get rid of Mock
+        mockLocalStorage = new MockLocalStorage();
     }
 
     @Override
@@ -138,9 +146,34 @@ public class StationsListActivity extends BaseActivity {
             }
         });
 
-        mLoadStationTask = new StationsListActivity.StationsLoadTask(stations);
+        editText = (EditText)findViewById(R.id.search_field);
+        TextWatcher watcher = new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                searchWord = s.toString();
+
+                // form new Station List with suited stations
+                List<StationObject> suitedStations = new ArrayList<>();
+                for(StationObject st : stations.getAll()){
+                    if (st.getTitle().toLowerCase().contains(searchWord.toLowerCase())){
+                        suitedStations.add(st);
+                    }
+                }
+                // create an adapter
+                StationsListAdapter adapter = new StationsListAdapter(self, suitedStations);
+                //assign the adapter to the list
+                stationsListView.setAdapter(adapter);
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        };
+        editText.addTextChangedListener(watcher);
+
+        mLoadStationTask = new StationsListActivity.StationsLoadTask();
         mLoadStationTask.execute((Void) null);
     }
+
 
     private void onStationSelected(StationObject station) {
 
@@ -149,11 +182,9 @@ public class StationsListActivity extends BaseActivity {
 
     public class StationsLoadTask extends AsyncTask<Void, Void, Boolean> {
 
-        StationsList stations;
         private MockLocalStorage mockLocalStorage;
 
-        StationsLoadTask(StationsList stations) {
-            this.stations = stations;
+        StationsLoadTask() {
         }
 
         @Override
@@ -162,7 +193,6 @@ public class StationsListActivity extends BaseActivity {
 
             mockLocalStorage = new MockLocalStorage();
             stations = new StationsList(ApiClient.instance(), mockLocalStorage);
-            mockLocalStorage.clear();
 
             return stations.load();
         }
@@ -170,7 +200,7 @@ public class StationsListActivity extends BaseActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             // create an adapter
-            StationsListAdapter adapter = new StationsListAdapter(self, stations);
+            StationsListAdapter adapter = new StationsListAdapter(self, stations.getAll());
             //assign the adapter to the list
             stationsListView.setAdapter(adapter);
         }

@@ -1,8 +1,6 @@
-package com.et.gui;
+package com.et.adapters;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +11,16 @@ import com.et.R;
 import com.et.response.object.StationObject;
 import com.et.stations.StationsList;
 
+import java.util.List;
 
 
 public class StationsListAdapter extends BaseAdapter {
 
-    Context ctx;
-    LayoutInflater lInflater;
-    StationsList stations;
+    private Context ctx;
+    private LayoutInflater lInflater;
+    private List<StationObject> stations;
 
-    StationsListAdapter(Context context, StationsList _stations) {
+    public StationsListAdapter(Context context, List<StationObject> _stations) {
         ctx = context;
         stations = _stations;
         lInflater = (LayoutInflater) ctx
@@ -31,13 +30,13 @@ public class StationsListAdapter extends BaseAdapter {
     // кол-во элементов
     @Override
     public int getCount() {
-        return stations.getAll().size();
+        return stations.size();
     }
 
     // элемент по позиции
     @Override
     public StationObject getItem(int position) {
-        return stations.getAll().get(position);
+        return stations.get(position);
     }
 
     // id по позиции
