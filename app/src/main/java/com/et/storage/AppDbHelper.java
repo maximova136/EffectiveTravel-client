@@ -25,7 +25,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
     }
     // SQL Create query
     public static final String SQL_CREATE_ROUE_ENTRIES = "CREATE TABLE " + RouteEntry.TABLE_NAME + " ( " +
-            RouteEntry._ID + " INTEGER PRIMARY KEY, " +
+//            RouteEntry._ID + " INTEGER PRIMARY KEY, " +
             RouteEntry.COLUMN_R_ID  + " TEXT, " +
             RouteEntry.COLUMN_TITLE + " TEXT, " +
             RouteEntry.COLUMN_COST  + " TEXT, " +
@@ -43,7 +43,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
     }
     // SQL Create query
     public static final String SQL_CREATE_STATION_ENTRIES = "CREATE TABLE " + RouteEntry.TABLE_NAME + " ( " +
-            StationEntry._ID + " INTEGER PRIMARY KEY, " +
+//            StationEntry._ID + " INTEGER PRIMARY KEY, " +
             StationEntry.COLUMN_S_ID  + " TEXT, " +
             StationEntry.COLUMN_TITLE + " TEXT )";
     // SQL Drop query
@@ -59,14 +59,19 @@ public class AppDbHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(SQL_CREATE_TABLES);
+        sqLiteDatabase.execSQL(SQL_CREATE_ROUE_ENTRIES);
+        sqLiteDatabase.execSQL(SQL_CREATE_STATION_ENTRIES);
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL(SQL_DROP_TABLES);
+        sqLiteDatabase.execSQL(SQL_DROP_ROUTE_ENTRIES);
+        sqLiteDatabase.execSQL(SQL_DROP_STATION_ENTRIES);
         onCreate(sqLiteDatabase);
     }
 

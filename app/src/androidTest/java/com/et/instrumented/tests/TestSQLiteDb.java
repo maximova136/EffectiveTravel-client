@@ -34,7 +34,7 @@ public class TestSQLiteDb {
     @Before
     public void setUpTest() {
         try {
-            Context ctx = InstrumentationRegistry.getContext();
+            Context ctx = InstrumentationRegistry.getTargetContext();
             db = new AppSQliteDb(ctx);
 
             db.clearCollection(RouteStorage.COLLECTION_NAME);
@@ -48,6 +48,9 @@ public class TestSQLiteDb {
     @After
     public void tearDownTest() {
         try {
+            if(db == null)
+                return;
+
             db.clearCollection(RouteStorage.COLLECTION_NAME);
             db.clearCollection(StationsStorage.COLLECTION_NAME);
 

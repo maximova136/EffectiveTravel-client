@@ -22,6 +22,7 @@ public class AppSQliteDb implements ILocalStorage {
 
     public AppSQliteDb(Context context) {
         helper = new AppDbHelper(context);
+        helper.getReadableDatabase().close();
         db = helper.getWritableDatabase();
     }
 
