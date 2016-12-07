@@ -24,7 +24,7 @@
             <Button
                 android:text="@string/transport_stats_title"
                 android:id="@+id/transport_stat_button"
-                android:background="@drawable/bus_shadow"
+                android:background="@drawable/bus_m_shad"
                 android:gravity="bottom|center_vertical|center_horizontal"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
