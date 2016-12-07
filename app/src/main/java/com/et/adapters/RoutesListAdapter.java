@@ -8,21 +8,22 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.et.R;
+import com.et.response.object.RouteObject;
 import com.et.response.object.StationObject;
 import com.et.stations.StationsList;
 
 import java.util.List;
 
 
-public class StationsListAdapter extends BaseAdapter {
+public class RoutesListAdapter extends BaseAdapter {
 
     private Context ctx;
     private LayoutInflater lInflater;
-    private List<StationObject> stations;
+    private List<RouteObject> routes;
 
-    public StationsListAdapter(Context context, List<StationObject> _stations) {
+    public RoutesListAdapter(Context context, List<RouteObject> _routes) {
         ctx = context;
-        stations = _stations;
+        routes = _routes;
         lInflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -30,13 +31,13 @@ public class StationsListAdapter extends BaseAdapter {
     // кол-во элементов
     @Override
     public int getCount() {
-        return stations.size();
+        return routes.size();
     }
 
     // элемент по позиции
     @Override
-    public StationObject getItem(int position) {
-        return stations.get(position);
+    public RouteObject getItem(int position) {
+        return routes.get(position);
     }
 
     // id по позиции
@@ -51,13 +52,13 @@ public class StationsListAdapter extends BaseAdapter {
         // используем созданные, но не используемые view
         View view = convertView;
         if (view == null) {
-            view = lInflater.inflate(R.layout.stations_list_item, parent, false);
+            view = lInflater.inflate(R.layout.routes_list_item, parent, false);
         }
 
-        StationObject station = getItem(position);
+        RouteObject route = getItem(position);
 
         // заполняем View в пункте списка данными
-        ((TextView) view.findViewById(R.id.StationItem)).setText(station.getTitle());
+        ((TextView) view.findViewById(R.id.RouteItem)).setText(route.getTitle()+" ("+route.getTransport_type()+")");
 
         return view;
     }
