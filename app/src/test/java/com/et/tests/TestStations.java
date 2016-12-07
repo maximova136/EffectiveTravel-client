@@ -146,7 +146,7 @@ public class TestStations {
         }
 
         @Override
-        public void clearStorage() throws DeleteObjectFailed {
+        public void clearCollection(String collection) throws DeleteObjectFailed {
             list.clear();
             savedList.clear();
             clearDbCalled = true;

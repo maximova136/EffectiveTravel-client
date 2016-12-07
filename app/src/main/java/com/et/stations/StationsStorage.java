@@ -26,7 +26,7 @@ public class StationsStorage implements IStationsStorage {
     @Override
     public boolean save(List<StationObject> stations) {
         try {
-            storage.clearStorage();
+            storage.clearCollection(COLLECTION_NAME);
 
             for (StationObject s : stations) {
                 HashMap<String, String> item = new HashMap<>();
