@@ -55,4 +55,12 @@ public class StationsList implements IStationsProvider {
     public List<StationObject> getAll() {
         return stations;
     }
+
+    /*
+    public int getSize() {
+        return 3;
+    }
+
+    public StationObject getStation(int pos) { return stations.get(pos); }
+*/
 }

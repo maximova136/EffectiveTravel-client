@@ -7,8 +7,8 @@ import com.et.R;
 
 public class TransportStatsActivity extends BaseActivity {
 
-    public TransportStatsActivity(boolean requiresToken) {
-        super(requiresToken);
+    public TransportStatsActivity() {
+        super(true);
     }
 
     @Override

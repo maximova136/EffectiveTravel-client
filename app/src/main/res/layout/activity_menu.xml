@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MenuActivity">
+    tools:context=".gui.MenuActivity">
 
     <GridLayout
         android:layout_width="match_parent"
@@ -65,6 +65,11 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="14dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></LinearLayout>
 
         <Space
             android:layout_width="match_parent"
