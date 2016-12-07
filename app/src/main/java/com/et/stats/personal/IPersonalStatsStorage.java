@@ -1,7 +1,9 @@
 package com.et.stats.personal;
 
 
-
+import java.util.HashMap;
 
 public interface IPersonalStatsStorage {
+    public boolean save();
+    public HashMap<String, Integer> load();
 }

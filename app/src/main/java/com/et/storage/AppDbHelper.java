@@ -50,11 +50,6 @@ public class AppDbHelper extends SQLiteOpenHelper {
     public static final String SQL_DROP_STATION_ENTRIES = "DROP TABLE IF EXISTS " + StationEntry.TABLE_NAME;
 
 
-    // Create all tables
-    public static final String SQL_CREATE_TABLES = SQL_CREATE_ROUE_ENTRIES + "; " + SQL_CREATE_STATION_ENTRIES + "; ";
-    public static final String SQL_DROP_TABLES = SQL_DROP_ROUTE_ENTRIES + "; " + SQL_DROP_STATION_ENTRIES + "; ";
-
-
     public AppDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
