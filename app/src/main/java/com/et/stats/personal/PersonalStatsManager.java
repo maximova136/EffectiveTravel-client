@@ -1,6 +1,10 @@
 package com.et.stats.personal;
 
 
+import com.et.exception.manager.InitPersonalStatsFailed;
+import com.et.routes.RouteType;
+import com.et.storage.ILocalStorage;
+
 import java.util.HashMap;
 
 public class PersonalStatsManager implements IPersonalStatsManager {
@@ -8,17 +12,73 @@ public class PersonalStatsManager implements IPersonalStatsManager {
 
     private IPersonalStatsStorage storage;
 
-    public PersonalStatsManager() {
+    public PersonalStatsManager(ILocalStorage localStorage)  {
+        storage = new PersonalStatsStorage(localStorage);
+        personalStats = storage.load();
 
+        if(personalStats == null) {
+            personalStats = new HashMap<>();
+        }
     }
+
+
+    public void init() throws InitPersonalStatsFailed {
+        personalStats.put(RouteType.BUS,     0);
+        personalStats.put(RouteType.TRAM,    0);
+        personalStats.put(RouteType.TROLLEY, 0);
+        if(!storage.save(personalStats)) {
+            throw new InitPersonalStatsFailed("Failed to save brand new counters");
+        }
+    }
+
 
     @Override
     public HashMap<String, Integer> getStats() {
-        return null;
+        return personalStats;
     }
+
 
     @Override
     public int getNumberOfTripsForType(String transportType) {
-        return 0;
+        return personalStats.get(transportType);
+    }
+
+
+    @Override
+    public boolean setNumberOfTripsForType(String transportType, int numberOfTrips) {
+        int oldValue = getNumberOfTripsForType(transportType);
+        personalStats.put(transportType, numberOfTrips);
+        if(!storage.save(personalStats)) {
+            personalStats.put(transportType, oldValue);
+            return false;
+        }
+        return false;
+    }
+
+
+    @Override
+    public int incrementCounterForType(String transportType) {
+        int newCounterValue = getNumberOfTripsForType(transportType) + 1;
+
+        if(!setNumberOfTripsForType(transportType, newCounterValue)) {
+            return -1;
+        }
+
+        return newCounterValue;
+    }
+
+
+    @Override
+    public int decrementNumberForType(String transportType) {
+        int newCounterValue = getNumberOfTripsForType(transportType) - 1;
+
+        if(newCounterValue < 0)
+            return 0;
+
+        if(!setNumberOfTripsForType(transportType, newCounterValue)) {
+            return -1;
+        }
+
+        return newCounterValue;
     }
 }
