@@ -2,6 +2,8 @@ package com.et.gui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -72,12 +74,16 @@ public class MenuActivity extends BaseActivity {
             public void onClick(View v) {
                 startActivity(new Intent(MenuActivity.this, PersonalStatsActivity.class));
 
-//        Button transportStatsButton = (Button) findViewById(R.id.transport_stats_button);
-//        transportStatsButton.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(MenuActivity.this, StationsListActivity.class));
+            }
+        });
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_from_menu);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                startActivity(new Intent(MenuActivity.this, AddStatisticsActivity.class));
             }
         });
     }
