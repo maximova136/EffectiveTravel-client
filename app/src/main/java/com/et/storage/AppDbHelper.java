@@ -11,8 +11,8 @@ import com.et.stations.StationsStorage;
 
 public class AppDbHelper extends SQLiteOpenHelper {
     // DB
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "EffectiveTravel.db";
+    public static final int DATABASE_VERSION = 2;
+    public static final String DATABASE_NAME = "EffectiveTravel_001.db";
 
 
     // Table for routes
@@ -42,7 +42,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
         public static final String COLUMN_TITLE          = StationsStorage.TITLE_KEY;
     }
     // SQL Create query
-    public static final String SQL_CREATE_STATION_ENTRIES = "CREATE TABLE " + RouteEntry.TABLE_NAME + " ( " +
+    public static final String SQL_CREATE_STATION_ENTRIES = "CREATE TABLE " + StationEntry.TABLE_NAME + " ( " +
 //            StationEntry._ID + " INTEGER PRIMARY KEY, " +
             StationEntry.COLUMN_S_ID  + " TEXT, " +
             StationEntry.COLUMN_TITLE + " TEXT )";
