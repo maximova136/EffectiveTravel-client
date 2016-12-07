@@ -17,7 +17,7 @@ public class Auth {
 
 
     public static void setToken(String token) {
-        token = token;
+        Auth.token = token;
     }
 
 

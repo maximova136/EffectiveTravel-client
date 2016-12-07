@@ -5,11 +5,16 @@ import android.os.Bundle;
 
 import com.et.R;
 
-public class TransportStatsActivity extends AppCompatActivity {
+public class TransportStatsActivity extends BaseActivity {
+
+    public TransportStatsActivity() {
+        super(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_transport_stats);
     }
 }

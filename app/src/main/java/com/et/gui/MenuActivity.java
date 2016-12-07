@@ -42,6 +42,7 @@ public class MenuActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Auth.logout();
+                // TODO зачем это в каждом обработчике?
                 setToken(Auth.getToken());
                 startActivity(new Intent(MenuActivity.this, LoginActivity.class));
             }
@@ -52,6 +53,31 @@ public class MenuActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MenuActivity.this, TestActivity.class));
+            }
+        });
+
+        Button transportStat = (Button) findViewById(R.id.transport_stat_button);
+        transportStat.setOnClickListener(new OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  //setToken(Auth.getToken());
+                  startActivity(new Intent(MenuActivity.this, TransportStatsActivity.class));
+                  //I CAN'T UNDERSTAND WHY APP IS BEING STOPPED HERE
+              }
+        });
+
+        Button personalStat = (Button) findViewById(R.id.personal_stats_button);
+        personalStat.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MenuActivity.this, PersonalStatsActivity.class));
+
+//        Button transportStatsButton = (Button) findViewById(R.id.transport_stats_button);
+//        transportStatsButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(MenuActivity.this, StationsListActivity.class));
+
             }
         });
     }
