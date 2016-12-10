@@ -2,6 +2,7 @@ package com.et.stats.personal;
 
 
 import com.et.exception.manager.InitPersonalStatsFailed;
+import com.et.exception.manager.WrongTransportType;
 import com.et.routes.RouteType;
 import com.et.storage.ILocalStorage;
 
@@ -26,6 +27,7 @@ public class PersonalStatsManager implements IPersonalStatsManager {
         personalStats.put(RouteType.BUS,     0);
         personalStats.put(RouteType.TRAM,    0);
         personalStats.put(RouteType.TROLLEY, 0);
+        personalStats.put(RouteType.SHUTTLE, 0);
         if(!storage.save(personalStats)) {
             throw new InitPersonalStatsFailed("Failed to save brand new counters");
         }
@@ -39,13 +41,25 @@ public class PersonalStatsManager implements IPersonalStatsManager {
 
 
     @Override
-    public int getNumberOfTripsForType(String transportType) {
-        return personalStats.get(transportType);
+    public int getNumberOfTripsForType(String transportType) throws WrongTransportType {
+        if(!checkTransportType(transportType))
+            throw new WrongTransportType("No such transport type '" + transportType + "'");
+
+        Integer numberOfTrips = personalStats.get(transportType);
+        if(numberOfTrips == null) {
+            personalStats.put(transportType, 0);
+            return 0;
+        }
+
+        return numberOfTrips;
     }
 
 
     @Override
-    public boolean setNumberOfTripsForType(String transportType, int numberOfTrips) {
+    public boolean setNumberOfTripsForType(String transportType, int numberOfTrips) throws WrongTransportType {
+        if(!checkTransportType(transportType))
+            throw new WrongTransportType("No such transport type '" + transportType + "'");
+
         int oldValue = getNumberOfTripsForType(transportType);
         personalStats.put(transportType, numberOfTrips);
         if(!storage.save(personalStats)) {
@@ -57,7 +71,7 @@ public class PersonalStatsManager implements IPersonalStatsManager {
 
 
     @Override
-    public int incrementCounterForType(String transportType) {
+    public int incrementCounterForType(String transportType) throws WrongTransportType {
         int newCounterValue = getNumberOfTripsForType(transportType) + 1;
 
         if(!setNumberOfTripsForType(transportType, newCounterValue)) {
@@ -69,7 +83,7 @@ public class PersonalStatsManager implements IPersonalStatsManager {
 
 
     @Override
-    public int decrementNumberForType(String transportType) {
+    public int decrementNumberForType(String transportType) throws WrongTransportType {
         int newCounterValue = getNumberOfTripsForType(transportType) - 1;
 
         if(newCounterValue < 0)
@@ -80,5 +94,21 @@ public class PersonalStatsManager implements IPersonalStatsManager {
         }
 
         return newCounterValue;
+    }
+
+    private boolean checkTransportType(String type) {
+        if(type == RouteType.BUS)
+            return true;
+
+        if(type == RouteType.TRAM)
+            return true;
+
+        if(type == RouteType.TROLLEY)
+            return true;
+
+        if(type == RouteType.SHUTTLE)
+            return true;
+
+        return false;
     }
 }

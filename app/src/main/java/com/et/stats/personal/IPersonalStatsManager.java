@@ -1,6 +1,8 @@
 package com.et.stats.personal;
 
 
+import com.et.exception.manager.WrongTransportType;
+
 import java.util.HashMap;
 
 public interface IPersonalStatsManager {
@@ -16,9 +18,10 @@ public interface IPersonalStatsManager {
     /**
      * Get number of trips by concrete type of public transport.
      * @param transportType Type of transport, like bus, tram, etc.
+     * @throws WrongTransportType if there is no such transport type.
      * @return Number of trips by this type of transport.
      */
-    public int getNumberOfTripsForType(String transportType);
+    public int getNumberOfTripsForType(String transportType) throws WrongTransportType;
 
 
 
@@ -28,7 +31,7 @@ public interface IPersonalStatsManager {
      * @param numberOfTrips Number of trips by this type of transport.
      * @return true on success.
      */
-    public boolean setNumberOfTripsForType(String transportType, int numberOfTrips);
+    public boolean setNumberOfTripsForType(String transportType, int numberOfTrips) throws WrongTransportType;
 
 
 
@@ -37,7 +40,7 @@ public interface IPersonalStatsManager {
      * @param transportType Type of transport, like bus, tram, etc.
      * @return New value of counter, -1 in case of failure.
      */
-    public int incrementCounterForType(String transportType);
+    public int incrementCounterForType(String transportType) throws WrongTransportType;
 
 
     /**
@@ -45,5 +48,5 @@ public interface IPersonalStatsManager {
      * @param transportType Type of transport, like bus, tram, etc.
      * @return New value of counter, -1 in case of failure.
      */
-    public int decrementNumberForType(String transportType);
+    public int decrementNumberForType(String transportType) throws WrongTransportType;
 }

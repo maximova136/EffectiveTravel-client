@@ -6,7 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import com.et.routes.RouteStorage;
+import com.et.routes.RouteType;
 import com.et.stations.StationsStorage;
+import com.et.stats.personal.PersonalStatsStorage;
 
 
 public class AppDbHelper extends SQLiteOpenHelper {
@@ -14,8 +16,9 @@ public class AppDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "EffectiveTravel_001.db";
 
-
+    // =============================================================================================
     // Table for routes
+    // =============================================================================================
     public static abstract class RouteEntry implements BaseColumns {
         public static final String TABLE_NAME            = RouteStorage.COLLECTION_NAME;
         public static final String COLUMN_R_ID           = RouteStorage.R_ID_KEY;
@@ -33,9 +36,14 @@ public class AppDbHelper extends SQLiteOpenHelper {
 
     public static final String SQL_DROP_ROUTE_ENTRIES = "DROP TABLE IF EXISTS " + RouteEntry.TABLE_NAME;
     // End of routes table
+    // =============================================================================================
 
 
+
+
+    // =============================================================================================
     // Table for stations
+    // =============================================================================================
     public static abstract class StationEntry implements BaseColumns {
         public static final String TABLE_NAME            = StationsStorage.COLLECTION_NAME;
         public static final String COLUMN_S_ID           = StationsStorage.S_ID_KEY;
@@ -48,6 +56,33 @@ public class AppDbHelper extends SQLiteOpenHelper {
             StationEntry.COLUMN_TITLE + " TEXT )";
     // SQL Drop query
     public static final String SQL_DROP_STATION_ENTRIES = "DROP TABLE IF EXISTS " + StationEntry.TABLE_NAME;
+    // =============================================================================================
+
+
+
+
+    // =============================================================================================
+    // Table for personal stats
+    // =============================================================================================
+    public static abstract class PersonalStatsEntry implements BaseColumns {
+        public static final String TABLE_NAME            = PersonalStatsStorage.COLLECTION_NAME;
+        public static final String BUS_COLUMN            = RouteType.BUS;
+        public static final String TRAM_COLUMN           = RouteType.TRAM;
+        public static final String TROLLEY_COLUMN        = RouteType.TROLLEY;
+        public static final String SHUTTLE_COLUMN        = RouteType.SHUTTLE;
+    }
+    // SQL Create entry
+    public static final String SQL_CREATE_PERSONAL_STATS_ENTRY = "CREATE TABLE " + PersonalStatsEntry.TABLE_NAME + " ( " +
+            PersonalStatsEntry.BUS_COLUMN       + " TEXT, " +
+            PersonalStatsEntry.TRAM_COLUMN      + " TEXT, " +
+            PersonalStatsEntry.TROLLEY_COLUMN   + " TEXT, " +
+            PersonalStatsEntry.SHUTTLE_COLUMN   + " TEXT )";
+    // SQL Drop query
+    public static String SQL_DROP_PERSONAL_STATS_ENTRY = "DROP TABLE IF EXISTS " + PersonalStatsEntry.TABLE_NAME;
+    // End of personal stats
+    // =============================================================================================
+
+
 
 
     public AppDbHelper(Context context) {
@@ -60,6 +95,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(SQL_CREATE_ROUE_ENTRIES);
         sqLiteDatabase.execSQL(SQL_CREATE_STATION_ENTRIES);
+        sqLiteDatabase.execSQL(SQL_CREATE_PERSONAL_STATS_ENTRY);
     }
 
 
@@ -67,6 +103,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(SQL_DROP_ROUTE_ENTRIES);
         sqLiteDatabase.execSQL(SQL_DROP_STATION_ENTRIES);
+        sqLiteDatabase.execSQL(SQL_DROP_PERSONAL_STATS_ENTRY);
         onCreate(sqLiteDatabase);
     }
 

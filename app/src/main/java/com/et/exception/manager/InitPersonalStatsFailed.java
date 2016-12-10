@@ -3,7 +3,7 @@ package com.et.exception.manager;
 
 import com.et.exception.EffectiveTravelException;
 
-public class InitPersonalStatsFailed extends EffectiveTravelException {
+public class InitPersonalStatsFailed extends ManagerException {
     public InitPersonalStatsFailed() {
         super();
     }
