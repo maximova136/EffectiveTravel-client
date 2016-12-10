@@ -22,12 +22,10 @@ public class AppSQliteDb implements ILocalStorage {
 
     public AppSQliteDb(Context context) {
         helper = new AppDbHelper(context);
-        helper.getReadableDatabase().close();
         db = helper.getWritableDatabase();
     }
 
     public void close() {
-        db.close();
         helper.close();
     }
 
@@ -63,7 +61,11 @@ public class AppSQliteDb implements ILocalStorage {
         ArrayList< HashMap<String, String> > collectionItems = new ArrayList<>();
 
         Cursor cursor = db.query(collection, null, null, null, null, null, null);
+        if(cursor.getCount() <= 0)
+            return collectionItems;
+
         String[] columnNames = cursor.getColumnNames();
+        cursor.moveToFirst();
         do {
             HashMap<String, String> item = new HashMap<>();
             for (String column : columnNames ) {

@@ -9,6 +9,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.et.exception.storage.DeleteObjectFailed;
 import com.et.exception.storage.LoadCollectionFailed;
 import com.et.exception.storage.PutObjectFailed;
+import com.et.response.object.StationObject;
 import com.et.routes.RouteStorage;
 import com.et.stations.StationsStorage;
 import com.et.storage.AppSQliteDb;
@@ -28,8 +29,7 @@ public class TestSQLiteDb {
 
     private AppSQliteDb db;
 
-    public TestSQLiteDb() {
-    }
+    public TestSQLiteDb() {  }
 
     @Before
     public void setUpTest() {
@@ -64,8 +64,6 @@ public class TestSQLiteDb {
 
     @Test
     public void testAddReadRoue() {
-
-
         HashMap<String, String> item = new HashMap<>();
         item.put(RouteStorage.TITLE_KEY, "test_tile");
         item.put(RouteStorage.R_ID_KEY,  "test_r_id");
@@ -75,6 +73,30 @@ public class TestSQLiteDb {
         try {
             db.putObject(RouteStorage.COLLECTION_NAME, item);
             List< HashMap<String, String> > collection = db.loadCollection(RouteStorage.COLLECTION_NAME);
+
+            Assert.assertEquals("More than one object in collection", 1, collection.size());
+            HashMap<String, String> loadedItem = collection.get(0);
+
+            Assert.assertEquals("Inserted and loaded object differ", item, loadedItem);
+        }
+        catch (PutObjectFailed e) {
+            Assert.fail("Failed to add row: " + e.getMessage());
+        }
+        catch (LoadCollectionFailed e) {
+            Assert.fail("Failed to load collection: " + e.getMessage());
+        }
+    }
+
+
+    @Test
+    public void testAddReadStation() {
+        HashMap<String, String> item = new HashMap<>();
+        item.put(StationsStorage.TITLE_KEY, "test_tile");
+        item.put(StationsStorage.S_ID_KEY,  "test_s_id");
+
+        try {
+            db.putObject(StationsStorage.COLLECTION_NAME, item);
+            List< HashMap<String, String> > collection = db.loadCollection(StationsStorage.COLLECTION_NAME);
 
             Assert.assertEquals("More than one object in collection", 1, collection.size());
             HashMap<String, String> loadedItem = collection.get(0);
