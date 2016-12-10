@@ -1,12 +1,12 @@
 package com.et.gui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +22,7 @@ import com.et.exception.storage.PutObjectFailed;
 import com.et.exception.storage.UpdateObjectFailed;
 import com.et.response.object.StationObject;
 import com.et.stations.StationsList;
+import com.et.adapters.StationsMockLocalStorage;
 import com.et.stations.StationsStorage;
 import com.et.storage.ILocalStorage;
 
@@ -30,9 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-
 public class StationsListActivity extends BaseActivity {
-
     private class MockLocalStorage implements ILocalStorage {
         public ArrayList<StationObject> list;
         public ArrayList<StationObject> savedList;
@@ -112,7 +111,7 @@ public class StationsListActivity extends BaseActivity {
     private StationsListActivity.StationsLoadTask mLoadStationTask = null;
     Context ctx;
     LayoutInflater lInflater;
-    MockLocalStorage mockLocalStorage;
+    StationsMockLocalStorage stationsMockLocalStorage;
 
     ListView stationsListView;
     EditText editText;
@@ -125,7 +124,7 @@ public class StationsListActivity extends BaseActivity {
     public StationsListActivity() {
         super(true);
         // TODO: get rid of Mock
-        mockLocalStorage = new MockLocalStorage();
+        stationsMockLocalStorage = new StationsMockLocalStorage();
     }
 
     @Override
@@ -140,13 +139,10 @@ public class StationsListActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 StationObject station = (StationObject) stationsListView.getAdapter().getItem(position);
-                Log.i("ITEM STATION", station.getTitle());
-                // TODO: Intent to RoutesListActivity
-                /*Intent intent = new Intent(StationsListActivity.this, RouteListActivity.class);
-                String message = "abc";
-                intent.putExtra(EXTRA_MESSAGE, message);
+                Intent intent = new Intent(StationsListActivity.this, RoutesListActivity.class);
+                intent.putExtra("S_ID", station.getS_id());
+                intent.putExtra("S_TITLE", station.getTitle());
                 startActivity(intent);
-*/
             }
         });
 
@@ -179,14 +175,9 @@ public class StationsListActivity extends BaseActivity {
     }
 
 
-    private void onStationSelected(StationObject station) {
-
-    }
-
-
     public class StationsLoadTask extends AsyncTask<Void, Void, Boolean> {
 
-        private MockLocalStorage mockLocalStorage;
+        private StationsMockLocalStorage stationsMockLocalStorage;
 
         StationsLoadTask() {
         }
@@ -195,8 +186,8 @@ public class StationsListActivity extends BaseActivity {
         protected Boolean doInBackground(Void... params) {
             Log.i("StationsListActivity", "Trying to load stations.");
 
-            mockLocalStorage = new MockLocalStorage();
-            stations = new StationsList(ApiClient.instance(), mockLocalStorage);
+            stationsMockLocalStorage = new StationsMockLocalStorage();
+            stations = new StationsList(ApiClient.instance(), stationsMockLocalStorage);
 
             return stations.load();
         }
