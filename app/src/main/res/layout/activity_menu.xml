@@ -11,74 +11,74 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".gui.MenuActivity">
 
-    <GridLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnCount="2">
+        android:layout_height="match_parent">
 
-        <Button
-            android:text="@string/transport_stats_title"
-            android:id="@+id/transport_stat_button"
-            android:background="@drawable/bus_"
-            android:gravity="bottom|center_vertical|center_horizontal"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="right" />
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="2"
+            android:layout_gravity="center_vertical|center">
 
-        <Button
-            android:text="@string/personal_stats_title"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:id="@+id/personal_stats_button"
-            android:background="@drawable/stats"
-            android:gravity="bottom|center_vertical|center_horizontal"
-            android:layout_gravity="right" />
+            <Button
+                android:text="@string/transport_stats_title"
+                android:id="@+id/transport_stat_button"
+                android:background="@drawable/bus_m_shad"
+                android:gravity="bottom|center_vertical|center_horizontal"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="end" />
 
-        <Button
-            android:text="TEST"
+            <Button
+                android:text="@string/personal_stats_title"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:id="@+id/personal_stats_button"
+                android:background="@drawable/statistics_shadow"
+                android:gravity="bottom|center_vertical|center_horizontal"
+                android:layout_gravity="end" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:layout_columnSpan="2" />
+
+            <Button
+                android:gravity="bottom|center_vertical|center_horizontal"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="end"
+                android:id="@+id/setting_button"
+                android:background="@drawable/settings_shadow" />
+
+            <Button
+                android:gravity="bottom|center_vertical|center_horizontal"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="end"
+                android:id="@+id/logout_button"
+                android:background="@drawable/log_out_shadow" />
+
+            <Button
+                android:text="TEST"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/test_button"
+                android:layout_gravity="center_vertical|center" />
+
+        </GridLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_add_from_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/test_button"
-            android:layout_gravity="bottom|right" />
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@android:drawable/ic_menu_add"
+            android:layout_gravity="bottom|end"
+            />
 
-        <Button
-            android:text="@string/logout_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/logout_button"
-            android:layout_gravity="bottom|center_horizontal" />
-
-    </GridLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="1"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="14dp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="14dp" />
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="14dp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
-
-    </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </RelativeLayout>

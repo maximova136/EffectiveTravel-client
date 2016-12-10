@@ -15,6 +15,7 @@ public class BaseActivity extends Activity {
 
     protected boolean requiresToken = false;
 
+    public BaseActivity() {this.requiresToken = false;}
     public BaseActivity(boolean requiresToken) {
         this.requiresToken = requiresToken;
     }
