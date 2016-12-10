@@ -310,7 +310,7 @@ public class TestPersonalStatsManager {
         try {
             personalStatsManager.init();
 
-            personalStatsManager.incrementCounterForType(RouteType.BUS);
+            Assert.assertEquals("Number should have incremented", 1, personalStatsManager.incrementCounterForType(RouteType.BUS));
 
             Assert.assertEquals("Number should have incremented", 1, personalStatsManager.getNumberOfTripsForType(RouteType.BUS));
             Assert.assertEquals("One item should be saved", 1, mockLocalStorage.personalStatsList.size());
@@ -337,7 +337,7 @@ public class TestPersonalStatsManager {
             personalStatsManager.init();
             personalStatsManager.setNumberOfTripsForType(RouteType.BUS, 5);
 
-            personalStatsManager.decrementNumberForType(RouteType.BUS);
+            Assert.assertEquals("Number should have decremented", 4, personalStatsManager.decrementNumberForType(RouteType.BUS));
 
             Assert.assertEquals("Number should have decremented", 4, personalStatsManager.getNumberOfTripsForType(RouteType.BUS));
             Assert.assertEquals("One item should be saved", 1, mockLocalStorage.personalStatsList.size());
