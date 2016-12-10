@@ -63,7 +63,7 @@ public class TestSQLiteDb {
     }
 
     @Test
-    public void testAddReadRoue() {
+    public void putLoadRoute() {
         HashMap<String, String> item = new HashMap<>();
         item.put(RouteStorage.TITLE_KEY, "test_tile");
         item.put(RouteStorage.R_ID_KEY,  "test_r_id");
@@ -89,7 +89,7 @@ public class TestSQLiteDb {
 
 
     @Test
-    public void testAddReadStation() {
+    public void putLoadStation() {
         HashMap<String, String> item = new HashMap<>();
         item.put(StationsStorage.TITLE_KEY, "test_tile");
         item.put(StationsStorage.S_ID_KEY,  "test_s_id");
