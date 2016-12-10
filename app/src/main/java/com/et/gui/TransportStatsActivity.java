@@ -26,22 +26,19 @@ public class TransportStatsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: WTF is that? 2 activities for transport stats?
-//<<<<<<< HEAD
-//
-//        setContentView(R.layout.activity_transport_stats);
-//
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_from_TS);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-////                        .setAction("Action", null).show();
-//                startActivity(new Intent(TransportStatsActivity.this, AddStatisticsActivity.class));
-//
-//            }
-//        });
-//=======
+        setContentView(R.layout.activity_transport_stats);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_from_TS);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                startActivity(new Intent(TransportStatsActivity.this, AddStatisticsActivity.class));
+
+            }
+        });
+// end TODO: WTF is that? 2 activities for transport stats?
 //        setContentView(R.layout.activity_statistics);
 //
 //        s_id = getIntent().getIntExtra("S_ID", -1);
@@ -50,6 +47,6 @@ public class TransportStatsActivity extends BaseActivity {
 //        titleTextView = (TextView) findViewById(R.id.title);
 //        idsTextView = (TextView) findViewById(R.id.ids);
 //        idsTextView.setText("S_ID="+s_id+"    "+"R_ID="+r_id);
-//>>>>>>> list_activity
+
     }
 }
