@@ -32,7 +32,7 @@
                     android:id="@+id/station"
                     android:layout_weight="1"
                     android:hint="Station"
-                    android:minLines="1" />
+                    android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -45,7 +45,7 @@
                     android:id="@+id/route"
                     android:layout_weight="1"
                     android:hint="Route"
-                    android:minLines="1" />
+                    android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
             <com.github.mikephil.charting.charts.HorizontalBarChart
