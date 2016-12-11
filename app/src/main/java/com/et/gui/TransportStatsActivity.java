@@ -20,7 +20,9 @@ import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -30,6 +32,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ColorFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -56,6 +60,18 @@ public class TransportStatsActivity extends BaseActivity {
     private TextView titleTextView;
     private TextView idsTextView;
 
+    public class LabelFuckingFormatter implements IAxisValueFormatter{
+        private final String[] mLabels;
+
+        public LabelFuckingFormatter(String[] labels){
+            mLabels = labels;
+        }
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            return mLabels[(int) value];
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,11 +89,12 @@ public class TransportStatsActivity extends BaseActivity {
         //some data;
         float a[] = {0.3f, 0.67f, 0.95f};
         int j = 0;
-        String labels[] = new String[30];
+        String labels[] = new String [30];
         //add coordinates Entry(getValueX(), getValueY());
-        for (int i = 0; i < 30; i++){
+        for (int i = 0; i < 28; i++){
             entries.add(new BarEntry(i, a[j++]));
             labels[i] = "7:"+i*5;
+            //labels[i] = (i%2 == 0 ? "pidor" : "ebuchij");
             if (j == 3) j = 0;
         }
 
@@ -85,23 +102,30 @@ public class TransportStatsActivity extends BaseActivity {
         //you need to add *DataSet to *Data object(s)
         BarDataSet set = new BarDataSet(entries, "Statistics");
         set.setColor(Color.parseColor("#5482ca")); // ColorPrimary
+
         set.setStackLabels(labels);
 
+        set.setLabel("ЕБУЧИЙ АНДРОИД");
+
         BarData data = new BarData(set);
+
         //data.setHighlightEnabled(false); //чтобы не нажимались графики. но без этого выглядит грустно
         //data.setBarWidth(0.1f);
-        data.setDrawValues(true);
+        //data.setDrawValues(true);
 
         chart.setData(data);
-        chart.setDrawGridBackground(false); //don't know for what  but pls DO NOT DELETE IT
-        chart.setFitBars(true);
-        chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
+        chart.getXAxis().setValueFormatter(new LabelFuckingFormatter(labels));
+        //chart.getAxisLeft().setValueFormatter(new LabelFuckingFormatter(labels));
 
         //it seems that it doesn't work :(
         chart.getAxisLeft().setDrawGridLines(false);
         chart.getXAxis().setDrawGridLines(false);
         chart.setDrawGridBackground(false);
 
+//        chart.setDrawGridBackground(false); //don't know for what  but pls DO NOT DELETE IT
+//        chart.setFitBars(true);
+        chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
+        chart.setMaxVisibleValueCount(5);
 
         chart.invalidate(); //refresh
 
@@ -128,42 +152,42 @@ public class TransportStatsActivity extends BaseActivity {
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+      //  client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("TransportStats Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
+//    public Action getIndexApiAction() {
+//        Thing object = new Thing.Builder()
+//                .setName("TransportStats Page") // TODO: Define a title for the content shown.
+//                // TODO: Make sure this auto-generated URL is correct.
+//                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+//                .build();
+//        return new Action.Builder(Action.TYPE_VIEW)
+//                .setObject(object)
+//                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+//                .build();
+//    }
+//
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//        // ATTENTION: This was auto-generated to implement the App Indexing API.
+//        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        client.connect();
+//        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//
+//        // ATTENTION: This was auto-generated to implement the App Indexing API.
+//        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+//        client.disconnect();
+//    }
 }
