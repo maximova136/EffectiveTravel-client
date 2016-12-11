@@ -7,6 +7,9 @@ import com.et.exception.api.RequestFailedException;
 import com.et.exception.api.LoginFailedException;
 import com.et.exception.api.SignupFailedException;
 import com.et.request.body.LoginBody;
+import com.et.request.body.NoteBody;
+import com.et.response.BaseResponse;
+import com.et.response.StatisticsResponse;
 import com.et.response.object.RouteObject;
 import com.et.response.RoutesResponse;
 import com.et.response.SignupResponse;
@@ -119,6 +122,42 @@ public class ApiClient implements IApiClient {
             }
             else {
                 throw new InsuccessfulResponseException("Failed to fetch stations from server");
+            }
+        }
+        catch (IOException e) {
+            throw new RequestFailedException(e);
+        }
+    }
+
+
+
+    @Override
+    public StatisticsResponse statistics(int s_id, int r_id) throws RequestFailedException, InsuccessfulResponseException {
+        try {
+            Call<StatisticsResponse> request = service.statistics(Auth.getHeaderField(), s_id, r_id);
+            Response<StatisticsResponse> response = request.execute();
+            if(response.body().isSuccess()) {
+                return response.body();
+            }
+            else {
+                throw new InsuccessfulResponseException("Failed to fetch statisitics for s_id:" + s_id + " r_id:" + r_id);
+            }
+        }
+        catch (IOException e) {
+            throw new RequestFailedException(e);
+        }
+    }
+
+
+
+    @Override
+    public void submitNote(int s_id, int r_id, String time) throws RequestFailedException, InsuccessfulResponseException {
+        try {
+            NoteBody noteBody = new NoteBody(time);
+            Call<BaseResponse> request = service.submitNote(Auth.getHeaderField(), s_id, r_id, noteBody);
+            Response<BaseResponse> response = request.execute();
+            if(!response.body().isSuccess()) {
+                throw new InsuccessfulResponseException("Failed to send new note to server s_id:" + s_id + " r_id:" + r_id);
             }
         }
         catch (IOException e) {

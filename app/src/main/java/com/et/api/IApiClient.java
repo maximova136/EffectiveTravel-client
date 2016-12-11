@@ -5,6 +5,7 @@ import com.et.exception.api.InsuccessfulResponseException;
 import com.et.exception.api.LoginFailedException;
 import com.et.exception.api.RequestFailedException;
 import com.et.exception.api.SignupFailedException;
+import com.et.response.StatisticsResponse;
 import com.et.response.object.RouteObject;
 import com.et.response.object.StationObject;
 
@@ -22,4 +23,10 @@ public interface IApiClient {
 
 
     public List<StationObject> stations() throws RequestFailedException, InsuccessfulResponseException;
+
+
+    public StatisticsResponse statistics(int s_id, int r_id) throws RequestFailedException, InsuccessfulResponseException;
+
+
+    public void submitNote(int s_id, int r_id, String time) throws RequestFailedException, InsuccessfulResponseException;
 }
