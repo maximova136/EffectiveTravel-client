@@ -73,10 +73,11 @@ public class TransportStatsActivity extends BaseActivity {
         //some data;
         float a[] = {0.3f, 0.67f, 0.95f};
         int j = 0;
-
+        String labels[] = new String[30];
         //add coordinates Entry(getValueX(), getValueY());
         for (int i = 0; i < 30; i++){
             entries.add(new BarEntry(i, a[j++]));
+            labels[i] = "7:"+i*5;
             if (j == 3) j = 0;
         }
 
@@ -84,6 +85,7 @@ public class TransportStatsActivity extends BaseActivity {
         //you need to add *DataSet to *Data object(s)
         BarDataSet set = new BarDataSet(entries, "Statistics");
         set.setColor(Color.parseColor("#5482ca")); // ColorPrimary
+        set.setStackLabels(labels);
 
         BarData data = new BarData(set);
         //data.setHighlightEnabled(false); //чтобы не нажимались графики. но без этого выглядит грустно
@@ -99,6 +101,7 @@ public class TransportStatsActivity extends BaseActivity {
         chart.getAxisLeft().setDrawGridLines(false);
         chart.getXAxis().setDrawGridLines(false);
         chart.setDrawGridBackground(false);
+
 
         chart.invalidate(); //refresh
 
