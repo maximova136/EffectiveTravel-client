@@ -7,10 +7,8 @@ import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.et.exception.storage.DeleteObjectFailed;
-import com.et.response.StatisticsResponse;
+import com.et.response.StatisticsObject;
 import com.et.response.object.FreqObject;
-import com.et.routes.RouteStorage;
-import com.et.stations.StationsStorage;
 import com.et.stats.transport.TransportStatsCache;
 import com.et.storage.AppSQliteDb;
 
@@ -65,7 +63,7 @@ public class TestTransportStatsCache {
     public void saveLoadCahedEntry() {
         TransportStatsCache cache = new TransportStatsCache(db);
 
-        StatisticsResponse entry = new StatisticsResponse();
+        StatisticsObject entry = new StatisticsObject();
 
         ArrayList<FreqObject> f1 = new ArrayList<>();
         for(int i = 0; i < 20; i++) {

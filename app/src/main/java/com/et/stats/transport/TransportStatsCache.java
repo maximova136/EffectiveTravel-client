@@ -4,13 +4,13 @@ package com.et.stats.transport;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.et.R;
-import com.et.response.StatisticsResponse;
+import com.et.response.StatisticsObject;
 import com.et.response.object.FreqObject;
-import com.et.storage.ILocalStorage;
 import com.et.storage.ISQLiteDb;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TransportStatsCache implements ITransportStatsCache {
@@ -25,9 +25,13 @@ public class TransportStatsCache implements ITransportStatsCache {
     public static final String FRIDAY_STATS_COLUMN_TYPE  = "TEXT";
     public static final String WEEKEND_STATS_COLUMN = "weekend_stats";
     public static final String WEEKEND_STATS_COLUMN_TYPE = "TEXT";
+    public static final String CACHE_EXP_TIME_COLUMN = "cache_expires";
+    public static final String CACHE_EXP_TIME_COLUMN_TYPE = "TEXT";
 
     public static final String FREQ_OBJECT_SEP = ";";
     public static final String TIME_COUNT_SEP = "=";
+
+    public static final SimpleDateFormat CACHE_EXPIRES_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     ISQLiteDb db;
 
@@ -36,36 +40,47 @@ public class TransportStatsCache implements ITransportStatsCache {
     }
 
     @Override
-    public StatisticsResponse load(int s_id, int r_id) {
+    public StatisticsObject load(int s_id, int r_id) {
         Integer sId = new Integer(s_id);
         Integer rId = new Integer(r_id);
 
-        Cursor result = db.query(
-                TABLE_NAME,
-                new String[] { WEEKDAY_STATS_COLUMN, FRIDAY_STATS_COLUMN, WEEKEND_STATS_COLUMN },
-                S_ID_COLUMN + " = ? AND " + R_ID_COLUMN + " = ?",
-                new String[] { sId.toString(), rId.toString() });
+//        Cursor result = db.query(
+//                TABLE_NAME,
+//                new String[] { WEEKDAY_STATS_COLUMN, FRIDAY_STATS_COLUMN, WEEKEND_STATS_COLUMN, CACHE_EXP_TIME_COLUMN },
+//                S_ID_COLUMN + " = ? AND " + R_ID_COLUMN + " = ?",
+//                new String[] { sId.toString(), rId.toString() });
+
+        Cursor result = db.rawQuery("SELECT " +
+                WEEKDAY_STATS_COLUMN + ", " + FRIDAY_STATS_COLUMN + ", " +
+                WEEKEND_STATS_COLUMN + ", " + CACHE_EXP_TIME_COLUMN + " FROM " + TABLE_NAME + " WHERE " + S_ID_COLUMN + " = " + sId.toString() +
+                " AND " + R_ID_COLUMN + " = " + rId.toString() + " AND " + CACHE_EXP_TIME_COLUMN + " > datetime('now', '-1 minutes')", null);
+
+        if(result.getCount() <= 0)
+            return null;
 
         result.moveToFirst();
 
-        StatisticsResponse stats = new StatisticsResponse();
+        StatisticsObject stats = new StatisticsObject();
 
-        stats.setWeekdaysFreq(stringToStatsList(result.getString(1)));
-        stats.setFridayFreq(stringToStatsList(result.getString(2)));
-        stats.setWeekendFreq(stringToStatsList(result.getString(3)));
+        stats.setWeekdaysFreq(stringToStatsList(result.getString(0)));
+        stats.setFridayFreq(stringToStatsList(result.getString(1)));
+        stats.setWeekendFreq(stringToStatsList(result.getString(2)));
+
+//        Date lastUpdated = CACHE_EXPIRES_FORMAT.parse(result.getString(4));
 
         return stats;
     }
 
     @Override
-    public void save(int s_id, int r_id, StatisticsResponse statistics) {
+    public void save(int s_id, int r_id, StatisticsObject statistics) {
         Integer sId = new Integer(s_id);
         Integer rId = new Integer(r_id);
 
         ContentValues values = new ContentValues();
         values.put(WEEKDAY_STATS_COLUMN, statListToString(statistics.getWeekdaysFreq()));
-        values.put(WEEKEND_STATS_COLUMN, statListToString(statistics.getWeekdaysFreq()));
+        values.put(WEEKEND_STATS_COLUMN, statListToString(statistics.getWeekendFreq()));
         values.put(FRIDAY_STATS_COLUMN,  statListToString(statistics.getFridayFreq()));
+        values.put(CACHE_EXP_TIME_COLUMN, CACHE_EXPIRES_FORMAT.format(new Date()));
 
         int updated = db.update(TABLE_NAME, values, S_ID_COLUMN + " = ? AND " + R_ID_COLUMN + " = ?", new String[] { rId.toString(), sId.toString() });
 
@@ -112,6 +127,8 @@ public class TransportStatsCache implements ITransportStatsCache {
             if(freqString.length() <= 0)
                 continue;
 
+            System.out.println(freqString);
+
             FreqObject freqObject = stringToFreq(freqString);
             list.add(freqObject);
         }
@@ -134,7 +151,7 @@ public class TransportStatsCache implements ITransportStatsCache {
         String[] parts = freqString.split(TIME_COUNT_SEP);
         FreqObject freq = new FreqObject();
         freq.setTime(parts[0].trim());
-        freq.setCount(Integer.parseInt(parts[1].trim()));
+        freq.setCount(Double.parseDouble(parts[1].trim()));
         return freq;
     }
 }

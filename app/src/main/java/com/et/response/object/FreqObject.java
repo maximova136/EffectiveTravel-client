@@ -5,7 +5,7 @@ package com.et.response.object;
 
 public class FreqObject {
     private String time;
-    private int count;
+    private double count;
 
     public String getTime() {
         return time;
@@ -15,11 +15,15 @@ public class FreqObject {
         this.time = time;
     }
 
-    public int getCount() {
+    public double getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(double count) {
         this.count = count;
+    }
+
+    public String toString() {
+        return "{" + time + "->" + count + "}";
     }
 }

@@ -133,4 +133,14 @@ public class AppSQliteDb implements ILocalStorage, ISQLiteDb {
     public int update(String table, ContentValues values, String where, String[] whereArgs) {
         return db.update(table, values, where, whereArgs);
     }
+
+    @Override
+    public void exec(String sqlQuery) {
+        db.execSQL(sqlQuery);
+    }
+
+    @Override
+    public Cursor rawQuery(String query, String[] queryParams) {
+        return db.rawQuery(query, queryParams);
+    }
 }

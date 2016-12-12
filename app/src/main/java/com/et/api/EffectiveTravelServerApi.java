@@ -6,6 +6,7 @@ import com.et.response.BaseResponse;
 import com.et.response.RoutesResponse;
 import com.et.response.SignupResponse;
 import com.et.response.StationsResponse;
+import com.et.response.StatisticsObject;
 import com.et.response.StatisticsResponse;
 import com.et.response.TokenResponse;
 
@@ -29,9 +30,9 @@ public interface EffectiveTravelServerApi {
     @GET("api/stations")
     Call<StationsResponse> stations(@Header("Authorization") String token);
 
-    @GET("api/statisitics/{s_id}/{r_id}")
+    @GET("api/statistics/{s_id}/{r_id}")
     Call<StatisticsResponse> statistics(@Header("Authorization") String token, @Path("s_id") int s_id, @Path("r_id") int r_id);
 
-    @POST("/api/notes/{s_id}/{r_id}")
+    @POST("api/notes/{s_id}/{r_id}")
     Call<BaseResponse> submitNote(@Header("Authorization") String token, @Path("s_id") int s_id, @Path("r_id") int r_id, @Body NoteBody noteBody);
 }

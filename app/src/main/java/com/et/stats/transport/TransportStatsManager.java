@@ -5,9 +5,10 @@ import com.et.api.IApiClient;
 import com.et.exception.api.ApiCallException;
 import com.et.exception.api.InsuccessfulResponseException;
 import com.et.exception.api.RequestFailedException;
-import com.et.response.StatisticsResponse;
+import com.et.response.StatisticsObject;
 import com.et.response.object.FreqObject;
 import com.et.storage.ILocalStorage;
+import com.et.storage.ISQLiteDb;
 
 import java.util.Date;
 import java.util.List;
@@ -17,17 +18,15 @@ public class TransportStatsManager implements ITransportStatsManager {
     private ITransportStatsCache cache;
     private ITransportStatsSubmitter submitter;
 
-    private List<FreqObject> weekendStats;
-    private List<FreqObject> fridayStats;
-    private List<FreqObject> weekdayStats;
-
-    public TransportStatsManager(IApiClient apiClient, ILocalStorage localStorage) {
+    public TransportStatsManager(IApiClient apiClient, ISQLiteDb sqLiteDb) {
         fetcher = new TransportStatsFetcher(apiClient);
+        cache = new TransportStatsCache(sqLiteDb);
+        submitter = new TransportStatsSubmitter(apiClient);
     }
 
     @Override
-    public StatisticsResponse getStats(int s_id, int r_id) {
-        StatisticsResponse stats = cache.load(s_id, r_id);
+    public StatisticsObject getStats(int s_id, int r_id) {
+        StatisticsObject stats =  cache.load(s_id, r_id);
 
         if(stats == null) {
             try {

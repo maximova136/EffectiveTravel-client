@@ -9,6 +9,7 @@ import com.et.exception.api.SignupFailedException;
 import com.et.request.body.LoginBody;
 import com.et.request.body.NoteBody;
 import com.et.response.BaseResponse;
+import com.et.response.StatisticsObject;
 import com.et.response.StatisticsResponse;
 import com.et.response.object.RouteObject;
 import com.et.response.RoutesResponse;
@@ -30,6 +31,7 @@ public class ApiClient implements IApiClient {
     private static ApiClient inst = null;
 
     public static final String BASE_URL = "https://busstat-server.herokuapp.com/";
+//    public static final String BASE_URL = "http://localhost:8000/";
 
     private Retrofit retrofit;
     private EffectiveTravelServerApi service;
@@ -132,15 +134,16 @@ public class ApiClient implements IApiClient {
 
 
     @Override
-    public StatisticsResponse statistics(int s_id, int r_id) throws RequestFailedException, InsuccessfulResponseException {
+    public StatisticsObject statistics(int s_id, int r_id) throws RequestFailedException, InsuccessfulResponseException {
         try {
             Call<StatisticsResponse> request = service.statistics(Auth.getHeaderField(), s_id, r_id);
             Response<StatisticsResponse> response = request.execute();
-            if(response.body().isSuccess()) {
-                return response.body();
+
+            if(response.body() == null || response.body().isSuccess()) {
+                return response.body().getStatistics();
             }
             else {
-                throw new InsuccessfulResponseException("Failed to fetch statisitics for s_id:" + s_id + " r_id:" + r_id);
+                throw new InsuccessfulResponseException("Failed to fetch statistics for s_id:" + s_id + " r_id:" + r_id);
             }
         }
         catch (IOException e) {

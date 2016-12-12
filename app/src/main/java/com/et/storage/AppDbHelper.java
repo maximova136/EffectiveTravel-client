@@ -14,7 +14,7 @@ import com.et.stats.transport.TransportStatsCache;
 
 public class AppDbHelper extends SQLiteOpenHelper {
     // DB
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "EffectiveTravel_001.db";
 
     // =============================================================================================
@@ -95,6 +95,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
         public static final String WEEKDAY_STATS_COLUMN   = TransportStatsCache.WEEKDAY_STATS_COLUMN;
         public static final String FRIDAY_STATS_COLUMN    = TransportStatsCache.FRIDAY_STATS_COLUMN;
         public static final String WEEKEND_STATS_COLUMN   = TransportStatsCache.WEEKEND_STATS_COLUMN;
+        public static final String CACHE_EXP_COLUMN       = TransportStatsCache.CACHE_EXP_TIME_COLUMN;
     }
     // SQL Create entry
     public static final String SQL_CREATE_TRANSPORT_STATS_CACHE_ENTRY = "CREATE TABLE " + StatsCaheEntry.TABLE_NAME + " ( " +
@@ -102,7 +103,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
             StatsCaheEntry.S_ID_COLUMN          + " " + TransportStatsCache.S_ID_COLUMN_TYPE            + ", " +
             StatsCaheEntry.WEEKDAY_STATS_COLUMN + " " + TransportStatsCache.WEEKDAY_STATS_COLUMN_TYPE   + ", " +
             StatsCaheEntry.FRIDAY_STATS_COLUMN  + " " + TransportStatsCache.FRIDAY_STATS_COLUMN_TYPE    + ", " +
-            StatsCaheEntry.WEEKEND_STATS_COLUMN + " " + TransportStatsCache.WEEKEND_STATS_COLUMN_TYPE   + ") ";
+            StatsCaheEntry.WEEKEND_STATS_COLUMN + " " + TransportStatsCache.WEEKEND_STATS_COLUMN_TYPE   + ", " +
+            StatsCaheEntry.CACHE_EXP_COLUMN     + " " + TransportStatsCache.CACHE_EXP_TIME_COLUMN_TYPE  + ") ";
     // SQL Drop query
     public static final String SQL_DROP_TRANSPORT_STATS_CACHE_ENTRY = "DROP TABLE IF EXISTS " + StatsCaheEntry.TABLE_NAME;
     // End of transport stats cache

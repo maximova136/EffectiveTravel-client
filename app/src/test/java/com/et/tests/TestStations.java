@@ -11,6 +11,7 @@ import com.et.exception.storage.DeleteObjectFailed;
 import com.et.exception.storage.LoadCollectionFailed;
 import com.et.exception.storage.PutObjectFailed;
 import com.et.exception.storage.UpdateObjectFailed;
+import com.et.response.StatisticsObject;
 import com.et.response.object.RouteObject;
 import com.et.response.object.StationObject;
 import com.et.stations.StationsList;
@@ -79,6 +80,16 @@ public class TestStations {
                 default:
                     return list;
             }
+        }
+
+        @Override
+        public StatisticsObject statistics(int s_id, int r_id) throws RequestFailedException, InsuccessfulResponseException {
+            throw new SignupFailedException("Mock");
+        }
+
+        @Override
+        public void submitNote(int s_id, int r_id, String time) throws RequestFailedException, InsuccessfulResponseException {
+            throw new SignupFailedException("Mock");
         }
     }
 
