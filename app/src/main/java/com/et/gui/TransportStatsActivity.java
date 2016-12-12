@@ -46,6 +46,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class TransportStatsActivity extends BaseActivity {
 
@@ -124,8 +125,7 @@ public class TransportStatsActivity extends BaseActivity {
         //add coordinates Entry(getValueX(), getValueY());
 
         // string time, float probability
-
-        for (int i = 0; i<28 ; i++){
+        for (int i = 0; i < 28; i++){
             entries.add(new BarEntry(i, a[j++]));
             labels[i] = "7:"+i*5;
             //labels[i] = (i%2 == 0 ? "pidor" : "ebuchij");
@@ -159,13 +159,16 @@ public class TransportStatsActivity extends BaseActivity {
         chart.setFitBars(true);
         chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
         chart.setMaxVisibleValueCount(5);
-        //-30!!!!!!!!!!!!!
+        //28!!!!!!!!!!!!!
         chart.moveViewTo(0,28, YAxis.AxisDependency.LEFT);
-
         //chart.moveViewTo(28f, 0f, chart.getAxisLeft().AxisDependency());
         /////!!!!!!///
         //here we will use getTimeToX() instead of argument!!!111!!!
         /////!!!!!!///
+
+
+        chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
+        chart.setMaxVisibleValueCount(5);
 
         chart.invalidate(); //refresh
 
