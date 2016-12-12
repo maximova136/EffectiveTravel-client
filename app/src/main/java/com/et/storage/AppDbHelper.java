@@ -9,11 +9,12 @@ import com.et.routes.RouteStorage;
 import com.et.routes.RouteType;
 import com.et.stations.StationsStorage;
 import com.et.stats.personal.PersonalStatsStorage;
+import com.et.stats.transport.TransportStatsCache;
 
 
 public class AppDbHelper extends SQLiteOpenHelper {
     // DB
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "EffectiveTravel_001.db";
 
     // =============================================================================================
@@ -78,8 +79,33 @@ public class AppDbHelper extends SQLiteOpenHelper {
             PersonalStatsEntry.TROLLEY_COLUMN   + " TEXT, " +
             PersonalStatsEntry.SHUTTLE_COLUMN   + " TEXT )";
     // SQL Drop query
-    public static String SQL_DROP_PERSONAL_STATS_ENTRY = "DROP TABLE IF EXISTS " + PersonalStatsEntry.TABLE_NAME;
+    public static final String SQL_DROP_PERSONAL_STATS_ENTRY = "DROP TABLE IF EXISTS " + PersonalStatsEntry.TABLE_NAME;
     // End of personal stats
+    // =============================================================================================
+
+
+
+    // =============================================================================================
+    // Table for transport stats cache
+    // =============================================================================================
+    public static abstract class StatsCaheEntry implements BaseColumns {
+        public static final String TABLE_NAME             = TransportStatsCache.TABLE_NAME;
+        public static final String R_ID_COLUMN            = TransportStatsCache.R_ID_COLUMN;
+        public static final String S_ID_COLUMN            = TransportStatsCache.S_ID_COLUMN;
+        public static final String WEEKDAY_STATS_COLUMN   = TransportStatsCache.WEEKDAY_STATS_COLUMN;
+        public static final String FRIDAY_STATS_COLUMN    = TransportStatsCache.FRIDAY_STATS_COLUMN;
+        public static final String WEEKEND_STATS_COLUMN   = TransportStatsCache.WEEKEND_STATS_COLUMN;
+    }
+    // SQL Create entry
+    public static final String SQL_CREATE_TRANSPORT_STATS_CACHE_ENTRY = "CREATE TABLE " + StatsCaheEntry.TABLE_NAME + " ( " +
+            StatsCaheEntry.R_ID_COLUMN          + " " + TransportStatsCache.R_ID_COLUMN_TYPE            + ", " +
+            StatsCaheEntry.S_ID_COLUMN          + " " + TransportStatsCache.S_ID_COLUMN_TYPE            + ", " +
+            StatsCaheEntry.WEEKDAY_STATS_COLUMN + " " + TransportStatsCache.WEEKDAY_STATS_COLUMN_TYPE   + ", " +
+            StatsCaheEntry.FRIDAY_STATS_COLUMN  + " " + TransportStatsCache.FRIDAY_STATS_COLUMN_TYPE    + ", " +
+            StatsCaheEntry.WEEKEND_STATS_COLUMN + " " + TransportStatsCache.WEEKEND_STATS_COLUMN_TYPE   + ") ";
+    // SQL Drop query
+    public static final String SQL_DROP_TRANSPORT_STATS_CACHE_ENTRY = "DROP TABLE IF EXISTS " + StatsCaheEntry.TABLE_NAME;
+    // End of transport stats cache
     // =============================================================================================
 
 
@@ -96,6 +122,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_ROUE_ENTRIES);
         sqLiteDatabase.execSQL(SQL_CREATE_STATION_ENTRIES);
         sqLiteDatabase.execSQL(SQL_CREATE_PERSONAL_STATS_ENTRY);
+        sqLiteDatabase.execSQL(SQL_CREATE_TRANSPORT_STATS_CACHE_ENTRY);
     }
 
 
@@ -104,6 +131,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_DROP_ROUTE_ENTRIES);
         sqLiteDatabase.execSQL(SQL_DROP_STATION_ENTRIES);
         sqLiteDatabase.execSQL(SQL_DROP_PERSONAL_STATS_ENTRY);
+        sqLiteDatabase.execSQL(SQL_DROP_TRANSPORT_STATS_CACHE_ENTRY);
         onCreate(sqLiteDatabase);
     }
 

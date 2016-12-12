@@ -35,7 +35,10 @@ public class TestSQLiteDb {
     public void setUpTest() {
         try {
             Context ctx = InstrumentationRegistry.getTargetContext();
-            db = new AppSQliteDb(ctx);
+
+            db = AppSQliteDb.init(ctx);
+
+            db.open();
 
             db.clearCollection(RouteStorage.COLLECTION_NAME);
             db.clearCollection(StationsStorage.COLLECTION_NAME);
@@ -55,6 +58,7 @@ public class TestSQLiteDb {
             db.clearCollection(StationsStorage.COLLECTION_NAME);
 
             db.close();
+
             db = null;
         }
         catch (DeleteObjectFailed e) {

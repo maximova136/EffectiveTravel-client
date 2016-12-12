@@ -16,17 +16,44 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AppSQliteDb implements ILocalStorage {
+public class AppSQliteDb implements ILocalStorage, ISQLiteDb {
+    private static AppSQliteDb inst = null;
+
     private AppDbHelper helper;
     private SQLiteDatabase db;
 
-    public AppSQliteDb(Context context) {
+    private boolean isOpened = false;
+
+    public static AppSQliteDb init(Context context) {
+        if(inst == null)
+            inst = new AppSQliteDb(context);
+
+        return inst;
+    }
+
+    public static AppSQliteDb getInstance() {
+        return inst;
+    }
+
+
+    private AppSQliteDb(Context context) {
         helper = new AppDbHelper(context);
         db = helper.getWritableDatabase();
+        isOpened = true;
+    }
+
+    public void open() {
+        if(!isOpened) {
+            db = helper.getWritableDatabase();
+            isOpened = true;
+        }
     }
 
     public void close() {
-        helper.close();
+        if(isOpened) {
+            db.close();
+            isOpened = false;
+        }
     }
 
     @Override
@@ -80,5 +107,30 @@ public class AppSQliteDb implements ILocalStorage {
         while(cursor.moveToNext());
 
         return collectionItems;
+    }
+
+
+    // Adapter
+    @Override
+    public Cursor query(String table, String[] columns, String selection, String[] selectionArgs) {
+        return db.query(table, columns, selection, selectionArgs, null, null, null);
+    }
+
+
+    @Override
+    public int delete(String table, String where, String[] whereArgs) {
+        return db.delete(table, where, whereArgs);
+    }
+
+
+    @Override
+    public long insert(String table, ContentValues values) {
+        return db.insert(table, null, values);
+    }
+
+
+    @Override
+    public int update(String table, ContentValues values, String where, String[] whereArgs) {
+        return db.update(table, values, where, whereArgs);
     }
 }
