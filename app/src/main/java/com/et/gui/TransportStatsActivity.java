@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 
 import com.et.R;
+import com.et.response.object.FreqObject;
 import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -41,7 +42,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TransportStatsActivity extends BaseActivity {
 
@@ -50,6 +54,33 @@ public class TransportStatsActivity extends BaseActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+
+    public int getTimeToX(List<FreqObject> a){
+        String timeStamp = new SimpleDateFormat("H:mm").format(Calendar.getInstance().getTime());
+        int hours   = Integer.parseInt(timeStamp.substring(0,2));
+        int minutes = Integer.parseInt(timeStamp.substring(3,5));
+        if (minutes % 5 != 0) {
+            minutes -= minutes%5;
+        }
+        String timeStampNew = timeStamp.substring(0,3);
+        if (minutes < 10)
+            timeStampNew += "0";
+        timeStampNew += minutes;
+
+        String beginTime = a.get(0).getTime();
+        int minH   = Integer.parseInt(beginTime.substring(0,2));
+        int minM   = Integer.parseInt(beginTime.substring(3,5));
+
+        if (hours < minH && minutes < minM)
+            return 0 ;
+
+        for (FreqObject i : a){
+            if(i.equals(timeStampNew)){
+                return a.indexOf(i);
+            }
+        }
+        return 0;
+    }
 
     public TransportStatsActivity() {
         super(true);
@@ -91,7 +122,10 @@ public class TransportStatsActivity extends BaseActivity {
         int j = 0;
         String labels[] = new String [30];
         //add coordinates Entry(getValueX(), getValueY());
-        for (int i = 0; i < 28; i++){
+
+        // string time, float probability
+
+        for (int i = 0; i<28 ; i++){
             entries.add(new BarEntry(i, a[j++]));
             labels[i] = "7:"+i*5;
             //labels[i] = (i%2 == 0 ? "pidor" : "ebuchij");
@@ -115,7 +149,6 @@ public class TransportStatsActivity extends BaseActivity {
 
         chart.setData(data);
         chart.getXAxis().setValueFormatter(new LabelFuckingFormatter(labels));
-        //chart.getAxisLeft().setValueFormatter(new LabelFuckingFormatter(labels));
 
         //it seems that it doesn't work :(
         chart.getAxisLeft().setDrawGridLines(false);
@@ -123,9 +156,16 @@ public class TransportStatsActivity extends BaseActivity {
         chart.setDrawGridBackground(false);
 
 //        chart.setDrawGridBackground(false); //don't know for what  but pls DO NOT DELETE IT
-//        chart.setFitBars(true);
+        chart.setFitBars(true);
         chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
         chart.setMaxVisibleValueCount(5);
+        //-30!!!!!!!!!!!!!
+        chart.moveViewTo(0,28, YAxis.AxisDependency.LEFT);
+
+        //chart.moveViewTo(28f, 0f, chart.getAxisLeft().AxisDependency());
+        /////!!!!!!///
+        //here we will use getTimeToX() instead of argument!!!111!!!
+        /////!!!!!!///
 
         chart.invalidate(); //refresh
 
