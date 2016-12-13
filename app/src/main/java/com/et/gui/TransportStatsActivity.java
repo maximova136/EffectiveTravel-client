@@ -16,7 +16,11 @@ import android.widget.TextView;
 
 
 import com.et.R;
+import com.et.api.ApiClient;
 import com.et.response.object.FreqObject;
+import com.et.stats.transport.ITransportStatsManager;
+import com.et.stats.transport.TransportStatsManager;
+import com.et.storage.AppSQliteDb;
 import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -53,7 +57,9 @@ public class TransportStatsActivity extends BaseActivity {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
+    //private GoogleApiClient client;
+
+    private ITransportStatsManager manager;
 
     public int getTimeToX(List<FreqObject> a){
         String timeStamp = new SimpleDateFormat("H:mm").format(Calendar.getInstance().getTime());
@@ -84,6 +90,7 @@ public class TransportStatsActivity extends BaseActivity {
 
     public TransportStatsActivity() {
         super(true);
+        manager = new TransportStatsManager(ApiClient.instance(), AppSQliteDb.getInstance());
     }
 
     private int s_id;
