@@ -30,12 +30,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient implements IApiClient {
     private static ApiClient inst = null;
 
-    public static final String BASE_URL = "https://busstat-server.herokuapp.com/";
-//    public static final String BASE_URL = "http://localhost:8000/";
+   public static final String BASE_URL = "https://busstat-server.herokuapp.com/";
+   // public static final String BASE_URL = "http://localhost:8000/";
 
     private Retrofit retrofit;
     private EffectiveTravelServerApi service;
-
 
 
     public static ApiClient instance() {
@@ -44,7 +43,6 @@ public class ApiClient implements IApiClient {
         }
         return inst;
     }
-
 
 
     private ApiClient() {

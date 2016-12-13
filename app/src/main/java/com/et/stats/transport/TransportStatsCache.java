@@ -151,7 +151,8 @@ public class TransportStatsCache implements ITransportStatsCache {
         String[] parts = freqString.split(TIME_COUNT_SEP);
         FreqObject freq = new FreqObject();
         freq.setTime(parts[0].trim());
-        freq.setCount(Double.parseDouble(parts[1].trim()));
+        //freq.setCount(Double.parseDouble(parts[1].trim()));
+        freq.setCount(Float.parseFloat(parts[1].trim()));
         return freq;
     }
 }

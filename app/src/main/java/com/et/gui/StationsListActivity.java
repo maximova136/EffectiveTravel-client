@@ -142,6 +142,7 @@ public class StationsListActivity extends BaseActivity {
                 Intent intent = new Intent(StationsListActivity.this, RoutesListActivity.class);
                 intent.putExtra("S_ID", station.getS_id());
                 intent.putExtra("S_TITLE", station.getTitle());
+                intent.putExtra("INIT_ACTIVITY", getIntent().getStringExtra("INIT_ACTIVITY"));
                 startActivity(intent);
             }
         });

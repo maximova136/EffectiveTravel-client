@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,10 +61,12 @@ public class TransportStatsActivity extends BaseActivity {
      */
     //private GoogleApiClient client;
 
-    private ITransportStatsManager manager;
+    private TransportStatsManager manager;
+    private List <FreqObject> statistics;
 
-    public int getTimeToX(List<FreqObject> a){
+    public int getTimeToX(){
         String timeStamp = new SimpleDateFormat("H:mm").format(Calendar.getInstance().getTime());
+
         int hours   = Integer.parseInt(timeStamp.substring(0,2));
         int minutes = Integer.parseInt(timeStamp.substring(3,5));
         if (minutes % 5 != 0) {
@@ -74,16 +77,16 @@ public class TransportStatsActivity extends BaseActivity {
             timeStampNew += "0";
         timeStampNew += minutes;
 
-        String beginTime = a.get(0).getTime();
+        String beginTime = statistics.get(0).getTime();
         int minH   = Integer.parseInt(beginTime.substring(0,2));
         int minM   = Integer.parseInt(beginTime.substring(3,5));
 
         if (hours < minH && minutes < minM)
             return 0 ;
 
-        for (FreqObject i : a){
+        for (FreqObject i : statistics){
             if(i.equals(timeStampNew)){
-                return a.indexOf(i);
+                return statistics.indexOf(i);
             }
         }
         return 0;
@@ -91,13 +94,12 @@ public class TransportStatsActivity extends BaseActivity {
 
     public TransportStatsActivity() {
         super(true);
-        manager = new TransportStatsManager(ApiClient.instance(), AppSQliteDb.getInstance());
     }
 
     private int s_id;
     private int r_id;
-    private TextView titleTextView;
-    private TextView idsTextView;
+    private TextView stationTextView;
+    private TextView routeTextView;
 
     public class LabelFuckingFormatter implements IAxisValueFormatter{
         private final String[] mLabels;
@@ -115,7 +117,28 @@ public class TransportStatsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        manager = new TransportStatsManager(ApiClient.instance(), AppSQliteDb.getInstance());
+
         setContentView(R.layout.activity_transport_stats);
+        s_id = getIntent().getIntExtra("S_ID", -1);
+        r_id = getIntent().getIntExtra("R_ID", -1);
+
+        stationTextView = (TextView) findViewById(R.id.station);
+        routeTextView = (TextView) findViewById(R.id.route);
+        stationTextView.setText("S_ID - "+s_id);
+        routeTextView.setText("ROUTE - " + r_id);
+
+        //get current day of week
+        String dayOfTheWeek = new SimpleDateFormat("EEEE").format(Calendar.getInstance().getTime()).toLowerCase();
+
+
+        if (dayOfTheWeek == "friday"){
+            statistics = manager.getStats(s_id, r_id).getFridayFreq();
+        } else if (dayOfTheWeek == "saturday" || dayOfTheWeek == "sunday"){
+            statistics = manager.getStats(s_id, r_id).getWeekendFreq();
+        } else {
+            statistics = manager.getStats(s_id, r_id).getWeekdaysFreq();
+        }
 
         //graphics steps
         //first - create view
@@ -128,16 +151,16 @@ public class TransportStatsActivity extends BaseActivity {
         //some data;
         float a[] = {0.3f, 0.67f, 0.95f};
         int j = 0;
-        String labels[] = new String [30];
+        String labels[] = new String [statistics.size()];
         //add coordinates Entry(getValueX(), getValueY());
 
-        // string time, float probability
-
-        for (int i = 0; i<28 ; i++){
-            entries.add(new BarEntry(i, a[j++]));
-            labels[i] = "7:"+i*5;
+        //string - time, float - probability
+        for (int i = 0; i < statistics.size() ; i++){
+            entries.add(new BarEntry(i, statistics.get(i).getCount()));
+            labels[i] = statistics.get(i).getTime();
+            //labels[i] = "7:"+i*5;
             //labels[i] = (i%2 == 0 ? "pidor" : "ebuchij");
-            if (j == 3) j = 0;
+            //if (j == 3) j = 0;
         }
 
         //thirdly (LAST STEP)
@@ -168,19 +191,17 @@ public class TransportStatsActivity extends BaseActivity {
         chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
         chart.setMaxVisibleValueCount(5);
         //-30!!!!!!!!!!!!!
-        chart.moveViewTo(0,28, YAxis.AxisDependency.LEFT);
+        chart.moveViewTo(0,getTimeToX(), YAxis.AxisDependency.LEFT);
 
         //chart.moveViewTo(28f, 0f, chart.getAxisLeft().AxisDependency());
         /////!!!!!!///
         //here we will use getTimeToX() instead of argument!!!111!!!
         /////!!!!!!///
 
-
         chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
         chart.setMaxVisibleValueCount(5);
 
         chart.invalidate(); //refresh
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_from_TS);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -192,54 +213,5 @@ public class TransportStatsActivity extends BaseActivity {
 
             }
         });
-// end TODO: WTF is that? 2 activities for transport stats?
-//        setContentView(R.layout.activity_statistics);
-//
-//        s_id = getIntent().getIntExtra("S_ID", -1);
-//        r_id = getIntent().getIntExtra("R_ID", -1);
-//
-//        titleTextView = (TextView) findViewById(R.id.title);
-//        idsTextView = (TextView) findViewById(R.id.ids);
-//        idsTextView.setText("S_ID="+s_id+"    "+"R_ID="+r_id);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-      //  client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-//    public Action getIndexApiAction() {
-//        Thing object = new Thing.Builder()
-//                .setName("TransportStats Page") // TODO: Define a title for the content shown.
-//                // TODO: Make sure this auto-generated URL is correct.
-//                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-//                .build();
-//        return new Action.Builder(Action.TYPE_VIEW)
-//                .setObject(object)
-//                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-//                .build();
-//    }
-//
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//        // ATTENTION: This was auto-generated to implement the App Indexing API.
-//        // See https://g.co/AppIndexing/AndroidStudio for more information.
-//        client.connect();
-//        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//
-//        // ATTENTION: This was auto-generated to implement the App Indexing API.
-//        // See https://g.co/AppIndexing/AndroidStudio for more information.
-//        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-//        client.disconnect();
-//    }
 }

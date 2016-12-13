@@ -12,6 +12,10 @@ import android.view.View.OnClickListener;
 import com.et.R;
 import com.et.auth.Auth;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class MenuActivity extends BaseActivity {
     private static String TAG = "MenuActivity";
 
@@ -38,6 +42,7 @@ public class MenuActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        this.getIntent().addCategory(Intent.CATEGORY_HOME);
 
         Button logoutButton = (Button) findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(new OnClickListener() {
@@ -62,9 +67,10 @@ public class MenuActivity extends BaseActivity {
         transportStat.setOnClickListener(new OnClickListener() {
               @Override
               public void onClick(View v) {
-                  //setToken(Auth.getToken());
-                  startActivity(new Intent(MenuActivity.this, TransportStatsActivity.class));
-                  //I CAN'T UNDERSTAND WHY APP IS BEING STOPPED HERE
+                  Intent intent = new Intent(MenuActivity.this, StationsListActivity.class);
+                  intent.putExtra("INIT_ACTIVITY", "MENU");
+                  startActivity(intent);
+                  //startActivity(new Intent(MenuActivity.this, StationsListActivity.class));
               }
         });
 
@@ -73,7 +79,6 @@ public class MenuActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MenuActivity.this, PersonalStatsActivity.class));
-
             }
         });
 
@@ -83,7 +88,10 @@ public class MenuActivity extends BaseActivity {
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                startActivity(new Intent(MenuActivity.this, AddStatisticsActivity.class));
+                //startActivity(new Intent(MenuActivity.this, AddStatisticsActivity.class));
+                Intent intent = new Intent(MenuActivity.this, StationsListActivity.class);
+                intent.putExtra("INIT_ACTIVITY", "SUBMIT");
+                startActivity(intent);
             }
         });
     }

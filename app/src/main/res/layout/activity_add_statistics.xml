@@ -13,99 +13,54 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
-        <GridLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:columnCount="4"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:rowCount="6">
+            android:layout_height="match_parent">
 
-
-            <ToggleButton
-                android:text="ToggleButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textOn="Bus"
-                android:textOff="Bus"
-                android:id="@+id/bus_button"
-                android:layout_gravity="center" />
-
-            <ToggleButton
-                android:textOn="Tr[am/oll]"
-                android:textOff="Tr[am/oll]"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/electro_button"
-                android:layout_column="1"
-                android:layout_columnSpan="1"
-                android:layout_gravity="center" />
-
-            <ToggleButton
-                android:textOn="Metro"
-                android:textOff="Metro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/metro_button"
-                android:layout_gravity="center" />
-
-            <ToggleButton
-                android:textOn="MINIBUS"
-                android:textOff="MINIBUS"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/minibus_button"
-                android:layout_gravity="center" />
+                android:id="@+id/stationView"
+                android:textAlignment="center" />
 
             <Space
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnSpan="4"
-                android:minHeight="20dp" />
+                android:minHeight="30dp" />
 
-            <Button
-                android:text="@string/station_title"
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnSpan="4"
-                android:id="@+id/station_button"
-                android:layout_width="250dp"
-                android:gravity="center_vertical|center_horizontal|center"
-                android:layout_gravity="center_horizontal" />
+                android:id="@+id/routeView"
+                android:textAlignment="center" />
 
             <Space
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnSpan="4"
-                android:minHeight="20dp" />
-
-            <Button
-                android:text="route"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="4"
-                android:gravity="center_vertical|center_horizontal|center"
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/route_button_add" />
+                android:minHeight="30dp" />
 
             <TimePicker
-                android:layout_width="227dp"
+                android:layout_width="match_parent"
                 android:layout_height="432dp"
                 android:id="@+id/timePicker"
                 android:addStatesFromChildren="false"
                 android:scrollbars="vertical"
-                android:layout_columnSpan="4"
                 android:timePickerMode="spinner"
                 android:layout_gravity="bottom|center" />
-
-        </GridLayout>
+        </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
-            app:srcCompat="@android:drawable/ic_input_add"
+            app:srcCompat="@android:drawable/ic_menu_send"
             android:layout_gravity="bottom|end"
             android:id="@+id/fab_send_stat"
             />

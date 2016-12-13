@@ -71,9 +71,18 @@ public class RoutesListActivity extends BaseActivity {
                 RouteObject route = (RouteObject) routesListView.getAdapter().getItem(position);
                 Log.i("ITEM ROUTE", route.getTitle());
 
-                Intent intent = new Intent(RoutesListActivity.this, TransportStatsActivity.class);
+                String initActivity =  getIntent().getStringExtra("INIT_ACTIVITY");
+
+                //CHOOSE NEXT ACTIVITY
+                Intent intent;
+                if (initActivity.equals("MENU")){
+                    intent = new Intent(RoutesListActivity.this, TransportStatsActivity.class);
+                } else {
+                    intent = new Intent(RoutesListActivity.this, AddStatisticsActivity.class);
+                }
                 intent.putExtra("S_ID", s_id);
                 intent.putExtra("R_ID", route.getR_id());
+                intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
