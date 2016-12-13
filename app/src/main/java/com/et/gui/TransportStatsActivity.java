@@ -50,6 +50,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class TransportStatsActivity extends BaseActivity {
 
@@ -173,6 +174,10 @@ public class TransportStatsActivity extends BaseActivity {
         /////!!!!!!///
         //here we will use getTimeToX() instead of argument!!!111!!!
         /////!!!!!!///
+
+
+        chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
+        chart.setMaxVisibleValueCount(5);
 
         chart.invalidate(); //refresh
 
