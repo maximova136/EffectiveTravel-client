@@ -8,9 +8,11 @@ import com.et.response.StatisticsObject;
 import com.et.response.object.FreqObject;
 import com.et.storage.ISQLiteDb;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class TransportStatsCache implements ITransportStatsCache {
@@ -44,16 +46,10 @@ public class TransportStatsCache implements ITransportStatsCache {
         Integer sId = new Integer(s_id);
         Integer rId = new Integer(r_id);
 
-//        Cursor result = db.query(
-//                TABLE_NAME,
-//                new String[] { WEEKDAY_STATS_COLUMN, FRIDAY_STATS_COLUMN, WEEKEND_STATS_COLUMN, CACHE_EXP_TIME_COLUMN },
-//                S_ID_COLUMN + " = ? AND " + R_ID_COLUMN + " = ?",
-//                new String[] { sId.toString(), rId.toString() });
-
         Cursor result = db.rawQuery("SELECT " +
-                WEEKDAY_STATS_COLUMN + ", " + FRIDAY_STATS_COLUMN + ", " +
-                WEEKEND_STATS_COLUMN + ", " + CACHE_EXP_TIME_COLUMN + " FROM " + TABLE_NAME + " WHERE " + S_ID_COLUMN + " = " + sId.toString() +
-                " AND " + R_ID_COLUMN + " = " + rId.toString() + " AND " + CACHE_EXP_TIME_COLUMN + " > datetime('now', '-1 minutes')", null);
+                    WEEKDAY_STATS_COLUMN + ", " + FRIDAY_STATS_COLUMN + ", " +
+                    WEEKEND_STATS_COLUMN + ", " + CACHE_EXP_TIME_COLUMN + " FROM " + TABLE_NAME + " WHERE " + S_ID_COLUMN + " = " + sId.toString() +
+                    " AND " + R_ID_COLUMN + " = " + rId.toString(), null); //  + " AND " + CACHE_EXP_TIME_COLUMN + " > datetime('now', '-1 minute')"
 
         if(result.getCount() <= 0)
             return null;
@@ -66,7 +62,13 @@ public class TransportStatsCache implements ITransportStatsCache {
         stats.setFridayFreq(stringToStatsList(result.getString(1)));
         stats.setWeekendFreq(stringToStatsList(result.getString(2)));
 
-//        Date lastUpdated = CACHE_EXPIRES_FORMAT.parse(result.getString(4));
+        Date lastUpdated = null;
+        try {
+            lastUpdated = CACHE_EXPIRES_FORMAT.parse(result.getString(3));
+        }
+        catch (ParseException e){}
+
+        stats.expires = lastUpdated;
 
         return stats;
     }
@@ -76,13 +78,16 @@ public class TransportStatsCache implements ITransportStatsCache {
         Integer sId = new Integer(s_id);
         Integer rId = new Integer(r_id);
 
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.add(GregorianCalendar.HOUR, 12);
+
         ContentValues values = new ContentValues();
         values.put(WEEKDAY_STATS_COLUMN, statListToString(statistics.getWeekdaysFreq()));
         values.put(WEEKEND_STATS_COLUMN, statListToString(statistics.getWeekendFreq()));
         values.put(FRIDAY_STATS_COLUMN,  statListToString(statistics.getFridayFreq()));
-        values.put(CACHE_EXP_TIME_COLUMN, CACHE_EXPIRES_FORMAT.format(new Date()));
+        values.put(CACHE_EXP_TIME_COLUMN, CACHE_EXPIRES_FORMAT.format(calendar.getTime()));
 
-        int updated = db.update(TABLE_NAME, values, S_ID_COLUMN + " = ? AND " + R_ID_COLUMN + " = ?", new String[] { rId.toString(), sId.toString() });
+        int updated = db.update(TABLE_NAME, values, S_ID_COLUMN + " = ? AND " + R_ID_COLUMN + " = ?", new String[] { sId.toString(), rId.toString() });
 
         // If entry already cached then update
         if(updated != 1) {

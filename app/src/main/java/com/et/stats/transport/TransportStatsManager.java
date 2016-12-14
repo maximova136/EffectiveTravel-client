@@ -21,11 +21,12 @@ public class TransportStatsManager implements ITransportStatsManager {
         submitter = new TransportStatsSubmitter(apiClient);
     }
 
+
     @Override
     public StatisticsObject getStats(int s_id, int r_id) {
         StatisticsObject stats =  cache.load(s_id, r_id);
 
-        if(stats == null) {
+        if(stats == null || stats.expires == null || stats.expires.before(new Date())) {
             try {
                 stats = fetcher.fetch(s_id, r_id);
                 cache.save(s_id, r_id, stats);
@@ -41,6 +42,7 @@ public class TransportStatsManager implements ITransportStatsManager {
 
         return stats;
     }
+
 
     @Override
     public boolean submitNote(int s_id, int r_id, Date time) {
