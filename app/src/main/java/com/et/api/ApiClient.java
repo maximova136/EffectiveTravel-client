@@ -9,7 +9,7 @@ import com.et.exception.api.SignupFailedException;
 import com.et.request.body.LoginBody;
 import com.et.request.body.NoteBody;
 import com.et.response.BaseResponse;
-import com.et.response.StatisticsObject;
+import com.et.response.object.StatisticsObject;
 import com.et.response.StatisticsResponse;
 import com.et.response.object.RouteObject;
 import com.et.response.RoutesResponse;
@@ -158,7 +158,7 @@ public class ApiClient implements IApiClient {
             Call<BaseResponse> request = service.submitNote(Auth.getHeaderField(), s_id, r_id, noteBody);
             Response<BaseResponse> response = request.execute();
             if(!response.body().isSuccess()) {
-                throw new InsuccessfulResponseException("Failed to send new note to server s_id:" + s_id + " r_id:" + r_id);
+                throw new InsuccessfulResponseException("Failed to send new note to server s_id:" + s_id + " r_id:" + r_id + " Server message: " + response.body().getError());
             }
         }
         catch (IOException e) {

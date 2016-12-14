@@ -7,7 +7,7 @@ import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.et.exception.storage.DeleteObjectFailed;
-import com.et.response.StatisticsObject;
+import com.et.response.object.StatisticsObject;
 import com.et.response.object.FreqObject;
 import com.et.stats.transport.TransportStatsCache;
 import com.et.storage.AppSQliteDb;

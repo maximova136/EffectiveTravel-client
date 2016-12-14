@@ -1,8 +1,9 @@
-package com.et.response;
+package com.et.response.object;
 
 
 import com.et.response.object.FreqObject;
 
+import java.util.Date;
 import java.util.List;
 
 public class StatisticsObject {
@@ -10,7 +11,7 @@ public class StatisticsObject {
     private List<FreqObject> fridayFreq;
     private List<FreqObject> weekdaysFreq;
 
-    public boolean expired;
+    public Date expires;
 
     public List<FreqObject> getWeekendFreq() {
         return weekendFreq;
@@ -34,5 +35,9 @@ public class StatisticsObject {
 
     public void setWeekdaysFreq(List<FreqObject> weekdaysFreq) {
         this.weekdaysFreq = weekdaysFreq;
+    }
+
+    public String toString() {
+        return weekdaysFreq + "\n" + fridayFreq + "\n" + weekendFreq;
     }
 }

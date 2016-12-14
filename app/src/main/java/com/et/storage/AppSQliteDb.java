@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import com.et.exception.storage.DeleteObjectFailed;
 import com.et.exception.storage.LoadCollectionFailed;
@@ -112,7 +113,7 @@ public class AppSQliteDb implements ILocalStorage, ISQLiteDb {
 
     // Adapter
     @Override
-    public Cursor query(String table, String[] columns, String selection, String[] selectionArgs) {
+    public Cursor query(String table, String[] columns, String selection, String[] selectionArgs) throws SQLiteException {
         return db.query(table, columns, selection, selectionArgs, null, null, null);
     }
 

@@ -4,7 +4,7 @@ package com.et.tests;
 import com.et.api.ApiClient;
 import com.et.auth.Auth;
 import com.et.exception.api.ApiCallException;
-import com.et.response.StatisticsObject;
+import com.et.response.object.StatisticsObject;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -36,8 +36,15 @@ public class TestApiClient {
 
     @Test
     public void submitNote() {
-        ApiClient client = ApiClient.instance();
-        Assert.assertTrue("Should succeed", client.submitNote(33, 33, "12:33"));
+//        ApiClient client = ApiClient.instance();
+//        try {
+//            client.submitNote(495, 53, "December 14, 2016 16:51:50");
+//            Assert.assertTrue(true);
+//        }
+//        catch (ApiCallException e) {
+//            e.printStackTrace();
+//            Assert.fail("Should not fail");
+//        }
 
     }
 

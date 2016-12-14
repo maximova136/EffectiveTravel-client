@@ -5,7 +5,7 @@ import com.et.exception.api.InsuccessfulResponseException;
 import com.et.exception.api.LoginFailedException;
 import com.et.exception.api.RequestFailedException;
 import com.et.exception.api.SignupFailedException;
-import com.et.response.StatisticsObject;
+import com.et.response.object.StatisticsObject;
 import com.et.response.object.RouteObject;
 import com.et.response.object.StationObject;
 

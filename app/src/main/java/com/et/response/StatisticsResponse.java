@@ -1,7 +1,7 @@
 package com.et.response;
 
 
-import java.util.List;
+import com.et.response.object.StatisticsObject;
 
 public class StatisticsResponse extends BaseResponse {
     private StatisticsObject statistics;
