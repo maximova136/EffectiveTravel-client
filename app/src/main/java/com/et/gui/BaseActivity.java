@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.et.R;
 import com.et.auth.Auth;
+import com.et.storage.AppSQliteDb;
 
 
 public class BaseActivity extends Activity {
@@ -27,6 +28,7 @@ public class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppSQliteDb.init(getApplicationContext());
         getToken();
     }
 

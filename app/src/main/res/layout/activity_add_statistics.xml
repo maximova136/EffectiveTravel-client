@@ -52,7 +52,7 @@
                 android:id="@+id/timePicker"
                 android:addStatesFromChildren="false"
                 android:scrollbars="vertical"
-                android:timePickerMode="spinner"
+                android:timePickerMode="clock"
                 android:layout_gravity="bottom|center" />
         </LinearLayout>
 

@@ -131,7 +131,7 @@ public class TransportStatsActivity extends BaseActivity {
         //get current day of week
         String dayOfTheWeek = new SimpleDateFormat("EEEE").format(Calendar.getInstance().getTime()).toLowerCase();
 
-
+/*
         if (dayOfTheWeek == "friday"){
             statistics = manager.getStats(s_id, r_id).getFridayFreq();
         } else if (dayOfTheWeek == "saturday" || dayOfTheWeek == "sunday"){
@@ -139,7 +139,7 @@ public class TransportStatsActivity extends BaseActivity {
         } else {
             statistics = manager.getStats(s_id, r_id).getWeekdaysFreq();
         }
-
+*/
         //graphics steps
         //first - create view
         HorizontalBarChart chart = (HorizontalBarChart) findViewById(R.id.chart);
