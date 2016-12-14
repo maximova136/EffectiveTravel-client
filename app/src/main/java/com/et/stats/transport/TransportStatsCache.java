@@ -4,7 +4,7 @@ package com.et.stats.transport;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.et.response.StatisticsObject;
+import com.et.response.object.StatisticsObject;
 import com.et.response.object.FreqObject;
 import com.et.storage.ISQLiteDb;
 

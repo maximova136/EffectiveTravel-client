@@ -4,7 +4,7 @@ package com.et.tests;
 import com.et.api.ApiClient;
 import com.et.auth.Auth;
 import com.et.exception.api.ApiCallException;
-import com.et.response.StatisticsObject;
+import com.et.response.object.StatisticsObject;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;

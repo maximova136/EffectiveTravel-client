@@ -9,7 +9,7 @@ import com.et.exception.api.SignupFailedException;
 import com.et.request.body.LoginBody;
 import com.et.request.body.NoteBody;
 import com.et.response.BaseResponse;
-import com.et.response.StatisticsObject;
+import com.et.response.object.StatisticsObject;
 import com.et.response.StatisticsResponse;
 import com.et.response.object.RouteObject;
 import com.et.response.RoutesResponse;

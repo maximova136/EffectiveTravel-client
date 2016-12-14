@@ -1,4 +1,4 @@
-package com.et.response;
+package com.et.response.object;
 
 
 import com.et.response.object.FreqObject;

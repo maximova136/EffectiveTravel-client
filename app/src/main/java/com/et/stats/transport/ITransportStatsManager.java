@@ -1,7 +1,7 @@
 package com.et.stats.transport;
 
 
-import com.et.response.StatisticsObject;
+import com.et.response.object.StatisticsObject;
 
 import java.util.Date;
 

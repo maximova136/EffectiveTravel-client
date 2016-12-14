@@ -5,7 +5,7 @@ import com.et.api.IApiClient;
 import com.et.exception.api.ApiCallException;
 import com.et.exception.api.InsuccessfulResponseException;
 import com.et.exception.api.RequestFailedException;
-import com.et.response.StatisticsObject;
+import com.et.response.object.StatisticsObject;
 import com.et.storage.ISQLiteDb;
 
 import java.util.Date;

@@ -6,7 +6,6 @@ import com.et.response.BaseResponse;
 import com.et.response.RoutesResponse;
 import com.et.response.SignupResponse;
 import com.et.response.StationsResponse;
-import com.et.response.StatisticsObject;
 import com.et.response.StatisticsResponse;
 import com.et.response.TokenResponse;
 

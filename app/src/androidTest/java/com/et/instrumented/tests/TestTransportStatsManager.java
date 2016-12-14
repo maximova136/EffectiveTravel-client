@@ -7,9 +7,8 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.et.api.ApiClient;
 import com.et.auth.Auth;
-import com.et.response.StatisticsObject;
+import com.et.response.object.StatisticsObject;
 import com.et.response.object.FreqObject;
-import com.et.stats.personal.PersonalStatsManager;
 import com.et.stats.transport.TransportStatsCache;
 import com.et.stats.transport.TransportStatsManager;
 import com.et.storage.AppSQliteDb;
@@ -21,7 +20,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 @RunWith(AndroidJUnit4.class)

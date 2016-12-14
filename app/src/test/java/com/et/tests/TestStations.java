@@ -11,7 +11,7 @@ import com.et.exception.storage.DeleteObjectFailed;
 import com.et.exception.storage.LoadCollectionFailed;
 import com.et.exception.storage.PutObjectFailed;
 import com.et.exception.storage.UpdateObjectFailed;
-import com.et.response.StatisticsObject;
+import com.et.response.object.StatisticsObject;
 import com.et.response.object.RouteObject;
 import com.et.response.object.StationObject;
 import com.et.stations.StationsList;
