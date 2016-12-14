@@ -21,6 +21,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 @RunWith(AndroidJUnit4.class)
 @SmallTest
@@ -84,6 +86,20 @@ public class TestTransportStatsManager {
         StatisticsObject cachedStats = manager.getStats(5, 15);
 
         Assert.assertEquals("Objects are not equal", stats, cachedStats);
+    }
+
+
+    @Test
+    public void submitNote() {
+        TransportStatsManager manager = new TransportStatsManager(ApiClient.instance(), AppSQliteDb.getInstance());
+
+        GregorianCalendar calendar = new GregorianCalendar();
+
+        calendar.set(GregorianCalendar.MINUTE, calendar.get(GregorianCalendar.MINUTE) + 2);
+
+        System.out.println(calendar.getTime().toString());
+
+        Assert.assertTrue("Submit should not fail", manager.submitNote(495, 53, calendar.getTime()));
     }
 
 }

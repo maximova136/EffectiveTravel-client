@@ -7,6 +7,7 @@ import java.util.Map;
 public class BaseResponse {
     protected boolean success;
     protected String error_code;
+    protected String error;
     protected Map<String, Object> additionalProperties;
 
     public boolean isSuccess() {
@@ -33,4 +34,11 @@ public class BaseResponse {
         this.additionalProperties.put(name, value);
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
 }

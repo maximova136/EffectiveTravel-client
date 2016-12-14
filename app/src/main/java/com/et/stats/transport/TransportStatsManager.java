@@ -6,12 +6,9 @@ import com.et.exception.api.ApiCallException;
 import com.et.exception.api.InsuccessfulResponseException;
 import com.et.exception.api.RequestFailedException;
 import com.et.response.StatisticsObject;
-import com.et.response.object.FreqObject;
-import com.et.storage.ILocalStorage;
 import com.et.storage.ISQLiteDb;
 
 import java.util.Date;
-import java.util.List;
 
 public class TransportStatsManager implements ITransportStatsManager {
     private ITransportStatsFetcher fetcher;

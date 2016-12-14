@@ -36,8 +36,15 @@ public class TestApiClient {
 
     @Test
     public void submitNote() {
-        ApiClient client = ApiClient.instance();
-        Assert.assertTrue("Should succeed", client.submitNote(33, 33, "12:33"));
+//        ApiClient client = ApiClient.instance();
+//        try {
+//            client.submitNote(495, 53, "December 14, 2016 16:51:50");
+//            Assert.assertTrue(true);
+//        }
+//        catch (ApiCallException e) {
+//            e.printStackTrace();
+//            Assert.fail("Should not fail");
+//        }
 
     }
 
