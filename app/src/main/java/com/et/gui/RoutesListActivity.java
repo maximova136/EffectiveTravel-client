@@ -40,8 +40,8 @@ public class RoutesListActivity extends BaseActivity {
     EditText editText;
 
     String searchWord = "";
-    int s_id;
-    String s_title;
+    StationObject station;
+
     TransportRoutes routes;
     RoutesListActivity self = this;
 
@@ -57,11 +57,10 @@ public class RoutesListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_list);
 
-        s_id = getIntent().getIntExtra("S_ID", 0);
-        s_title = getIntent().getStringExtra("S_TITLE");
+        station = getIntent().getParcelableExtra("STATION");
 
         TextView sTitleTextView = (TextView) findViewById(R.id.sTitle);
-        sTitleTextView.setText(s_title);
+        sTitleTextView.setText(station.getTitle());
         // find the list
         routesListView = (ListView) findViewById(R.id.routes_list);
 
@@ -80,7 +79,7 @@ public class RoutesListActivity extends BaseActivity {
                 } else {
                     intent = new Intent(RoutesListActivity.this, AddStatisticsActivity.class);
                 }
-                intent.putExtra("S_ID", s_id);
+                intent.putExtra("S_ID", station.getS_id());
                 intent.putExtra("R_ID", route.getR_id());
                 intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
