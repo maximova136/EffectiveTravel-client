@@ -70,7 +70,7 @@ public class TransportStatsActivity extends BaseActivity {
     private List <FreqObject> statistics;
 
     public int getTimeToX(){
-        String timeStamp = new SimpleDateFormat("H:mm").format(Calendar.getInstance().getTime());
+        /*String timeStamp = new SimpleDateFormat("H:mm").format(Calendar.getInstance().getTime());
 
         int hours   = Integer.parseInt(timeStamp.substring(0,2));
         int minutes = Integer.parseInt(timeStamp.substring(3,5));
@@ -93,8 +93,16 @@ public class TransportStatsActivity extends BaseActivity {
             if(i.equals(timeStampNew)){
                 return statistics.indexOf(i);
             }
-        }
-        return 0;
+        }*/
+        Calendar timeStamp = Calendar.getInstance();
+        int hours   = timeStamp.get(timeStamp.HOUR_OF_DAY);
+        System.out.println(hours);
+        int minutes   = timeStamp.get(timeStamp.MINUTE);
+        System.out.println(minutes);
+        int sumMin = hours*60+minutes;
+        int interval = sumMin/5;
+        System.out.println(interval);
+        return interval+5;
     }
 
     public TransportStatsActivity() {
@@ -131,7 +139,7 @@ public class TransportStatsActivity extends BaseActivity {
         stationTextView = (TextView) findViewById(R.id.station);
         routeTextView = (TextView) findViewById(R.id.route);
         stationTextView.setText("STATION - "+ station.getTitle());
-        routeTextView.setText("ROUTE - " + route.getTitle() + "(" + route.getTransport_type() + ")");
+        routeTextView.setText("ROUTE - " + route.getTitle() + " (" + route.getTransport_type() + ")");
 
         //get current day of week
         String dayOfTheWeek = new SimpleDateFormat("EEEE").format(Calendar.getInstance().getTime()).toLowerCase();
@@ -148,7 +156,10 @@ public class TransportStatsActivity extends BaseActivity {
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                startActivity(new Intent(TransportStatsActivity.this, AddStatisticsActivity.class));
+                Intent intent = new Intent(TransportStatsActivity.this, AddStatisticsActivity.class);
+                intent.putExtra("STATION", station);
+                intent.putExtra("ROUTE", route);
+                startActivity(intent);
 
             }
         });
@@ -181,7 +192,9 @@ public class TransportStatsActivity extends BaseActivity {
         protected void onPostExecute(final Boolean success) {
             Log.i("StatisticsLoad", "Statistics was loaded");
 
-            System.out.println("STATISTICS="+statistics);
+            if(statistics == null) {
+               // TODO: null handler
+            }
 
             //graphics steps
             //first - create view
@@ -201,9 +214,6 @@ public class TransportStatsActivity extends BaseActivity {
             for (int i = 0; i < statistics.size() ; i++){
                 entries.add(new BarEntry(i, statistics.get(i).getCount()));
                 labels[i] = statistics.get(i).getTime();
-                //labels[i] = "7:"+i*5;
-                //labels[i] = (i%2 == 0 ? "pidor" : "ebuchij");
-                //if (j == 3) j = 0;
             }
 
             //thirdly (LAST STEP)
@@ -212,8 +222,6 @@ public class TransportStatsActivity extends BaseActivity {
             set.setColor(Color.parseColor("#5482ca")); // ColorPrimary
 
             set.setStackLabels(labels);
-
-            set.setLabel("ЕБУЧИЙ АНДРОИД");
 
             BarData data = new BarData(set);
 
@@ -234,8 +242,8 @@ public class TransportStatsActivity extends BaseActivity {
             chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
             chart.setMaxVisibleValueCount(5);
             //-30!!!!!!!!!!!!!
+            //chart.moveViewTo(0,getTimeToX(), YAxis.AxisDependency.LEFT);
             chart.moveViewTo(0,getTimeToX(), YAxis.AxisDependency.LEFT);
-
             //chart.moveViewTo(28f, 0f, chart.getAxisLeft().AxisDependency());
             /////!!!!!!///
             //here we will use getTimeToX() instead of argument!!!111!!!

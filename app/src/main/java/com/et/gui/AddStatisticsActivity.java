@@ -15,6 +15,8 @@ import com.et.R;
 import com.et.adapters.StationsListAdapter;
 import com.et.adapters.StationsMockLocalStorage;
 import com.et.api.ApiClient;
+import com.et.response.object.RouteObject;
+import com.et.response.object.StationObject;
 import com.et.stations.StationsList;
 import com.et.stats.transport.TransportStatsManager;
 import com.et.storage.AppSQliteDb;
@@ -27,8 +29,8 @@ import java.util.GregorianCalendar;
 
 public class AddStatisticsActivity extends BaseActivity {
 
-    private int s_id;
-    private int r_id;
+    private StationObject station;
+    private RouteObject route;
     private TextView stationTextView;
     private TextView routeTextView;
     private TransportStatsManager manager;
@@ -44,13 +46,13 @@ public class AddStatisticsActivity extends BaseActivity {
         //timePicker.clearFocus();
 
         setContentView(R.layout.activity_add_statistics);
-        s_id = getIntent().getIntExtra("S_ID", -1);
-        r_id = getIntent().getIntExtra("R_ID", -1);
+        station = getIntent().getParcelableExtra("STATION");
+        route = getIntent().getParcelableExtra("ROUTE");
 
         stationTextView = (TextView) findViewById(R.id.stationView);
         routeTextView = (TextView) findViewById(R.id.routeView);
-        stationTextView.setText("S_ID - "+s_id);
-        routeTextView.setText("ROUTE - " + r_id);
+        stationTextView.setText("STATION - " + station.getTitle());
+        routeTextView.setText("ROUTE - " + route.getTitle());
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_send_stat);
@@ -62,26 +64,6 @@ public class AddStatisticsActivity extends BaseActivity {
                 mNoteSubmitTask.execute((Void) null);
 
                 Snackbar.make(view, "Data has been sent (or not)", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-                /*
-
-                manager = new TransportStatsManager(ApiClient.instance(), AppSQliteDb.getInstance());
-
-                Date time = Calendar.getInstance().getTime();
-                timePicker.clearFocus();
-
-                int h = timePicker.getHour();
-                int m = (timePicker.getMinute());
-                */
-                /*time.setHours(h);
-                time.setMinutes(m);
-                DatePicker simpleDatePicker = (DatePicker)findViewById(R.id.simpleDatePicker); // initiate a date picker
-                int month = simpleDatePicker.getMonth();
-                manager.submitNote(s_id, r_id, time);*/
-                //startActivity(new Intent(TransportStatsActivity.this, AddStatisticsActivity.class));*/
-
-
-
             }
         });
     }
@@ -104,7 +86,7 @@ public class AddStatisticsActivity extends BaseActivity {
             calendar.set(GregorianCalendar.HOUR, hours);
             calendar.set(GregorianCalendar.MINUTE, minutes);
 
-            return manager.submitNote(495, 53, calendar.getTime());
+            return manager.submitNote(station.getS_id(), route.getR_id(), calendar.getTime());
         }
 
         @Override
