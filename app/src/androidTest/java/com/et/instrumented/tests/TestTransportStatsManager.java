@@ -67,7 +67,7 @@ public class TestTransportStatsManager {
 
         for(int i = 0; i < 45; i++) {
             String time = "" + i /2 + ":" + i;
-            double freq = (float) i / 100;
+            float freq = (float) i / 100;
             FreqObject freqObject = new FreqObject();
             freqObject.setTime(time);
             freqObject.setCount(freq);

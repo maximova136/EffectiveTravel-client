@@ -56,11 +56,13 @@ public class StationsList implements IStationsProvider {
         return stations;
     }
 
-    /*
-    public int getSize() {
-        return 3;
+    @Override
+    public StationObject getBySId(int sId) {
+        for(StationObject s : stations) {
+            if(s.getS_id() == sId) {
+                return s;
+            }
+        }
+        return null;
     }
-
-    public StationObject getStation(int pos) { return stations.get(pos); }
-*/
 }
