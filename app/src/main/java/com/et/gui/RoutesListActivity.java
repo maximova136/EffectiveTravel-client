@@ -16,12 +16,11 @@ import android.widget.TextView;
 
 import com.et.R;
 import com.et.adapters.RoutesListAdapter;
-import com.et.adapters.RoutesMockLocalStorage;
 import com.et.api.ApiClient;
 import com.et.response.object.RouteObject;
 import com.et.response.object.StationObject;
 import com.et.routes.TransportRoutes;
-import com.et.adapters.StationsMockLocalStorage;
+import com.et.storage.AppSQliteDb;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,6 @@ public class RoutesListActivity extends BaseActivity {
     private RoutesListActivity.RoutesLoadTask mLoadStationTask = null;
     Context ctx;
     LayoutInflater lInflater;
-    StationsMockLocalStorage stationsMockLocalStorage;
 
     ListView routesListView;
     EditText editText;
@@ -49,7 +47,6 @@ public class RoutesListActivity extends BaseActivity {
     public RoutesListActivity() {
         super(true);
         // TODO: get rid of Mock
-        stationsMockLocalStorage = new StationsMockLocalStorage();
     }
 
     @Override
@@ -123,8 +120,6 @@ public class RoutesListActivity extends BaseActivity {
 
     public class RoutesLoadTask extends AsyncTask<Void, Void, Boolean> {
 
-        private RoutesMockLocalStorage routesMockLocalStorage;
-
         RoutesLoadTask() {
         }
 
@@ -132,8 +127,7 @@ public class RoutesListActivity extends BaseActivity {
         protected Boolean doInBackground(Void... params) {
             Log.i("RoutesListActivity", "Trying to load routes.");
 
-            routesMockLocalStorage = new RoutesMockLocalStorage();
-            routes = new TransportRoutes(ApiClient.instance(), routesMockLocalStorage);
+            routes = new TransportRoutes(ApiClient.instance(), AppSQliteDb.getInstance());
 
             return routes.load();
         }
@@ -141,7 +135,7 @@ public class RoutesListActivity extends BaseActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             // create an adapter
-            RoutesListAdapter adapter = new RoutesListAdapter(self, routes.getAll());
+            RoutesListAdapter adapter = new RoutesListAdapter(self, routes.getRoutesForStation(station));
             //assign the adapter to the list
             routesListView.setAdapter(adapter);
         }

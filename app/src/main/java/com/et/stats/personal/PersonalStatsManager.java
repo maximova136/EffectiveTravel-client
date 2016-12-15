@@ -98,16 +98,16 @@ public class PersonalStatsManager implements IPersonalStatsManager {
     }
 
     private boolean checkTransportType(String type) {
-        if(type == RouteType.BUS)
+        if(type.equals(RouteType.BUS))
             return true;
 
-        if(type == RouteType.TRAM)
+        if(type.equals(RouteType.TRAM))
             return true;
 
-        if(type == RouteType.TROLLEY)
+        if(type.equals(RouteType.TROLLEY))
             return true;
 
-        if(type == RouteType.SHUTTLE)
+        if(type.equals(RouteType.SHUTTLE))
             return true;
 
         return false;

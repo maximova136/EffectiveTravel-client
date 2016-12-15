@@ -1,7 +1,5 @@
 package com.et.gui;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,19 +10,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.et.R;
-import com.et.adapters.StationsListAdapter;
-import com.et.adapters.StationsMockLocalStorage;
 import com.et.api.ApiClient;
+import com.et.exception.manager.WrongTransportType;
 import com.et.response.object.RouteObject;
 import com.et.response.object.StationObject;
-import com.et.stations.StationsList;
+import com.et.stats.personal.PersonalStatsManager;
 import com.et.stats.transport.TransportStatsManager;
 import com.et.storage.AppSQliteDb;
 
-import junit.framework.Assert;
-
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class AddStatisticsActivity extends BaseActivity {
@@ -35,11 +28,14 @@ public class AddStatisticsActivity extends BaseActivity {
     private TextView routeTextView;
     private TransportStatsManager manager;
     private TimePicker timePicker;
+    private PersonalStatsManager personalStatsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         manager = new TransportStatsManager(ApiClient.instance(), AppSQliteDb.getInstance());
+        personalStatsManager = new PersonalStatsManager(AppSQliteDb.getInstance());
+
         setContentView(R.layout.activity_add_statistics);
         timePicker = (TimePicker) findViewById(R.id.timePicker);
         timePicker.setIs24HourView(true);
@@ -63,7 +59,7 @@ public class AddStatisticsActivity extends BaseActivity {
                 NoteSubmitTask mNoteSubmitTask = new NoteSubmitTask(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
                 mNoteSubmitTask.execute((Void) null);
 
-                Snackbar.make(view, "Data has been sent (or not)", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(view, "Data has been sent", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
     }
@@ -85,6 +81,12 @@ public class AddStatisticsActivity extends BaseActivity {
             GregorianCalendar calendar = new GregorianCalendar();
             calendar.set(GregorianCalendar.HOUR, hours);
             calendar.set(GregorianCalendar.MINUTE, minutes);
+
+            try {
+                personalStatsManager.incrementCounterForType(route.getTransport_type());
+            } catch (WrongTransportType e) {
+                e.printStackTrace();
+            }
 
             return manager.submitNote(station.getS_id(), route.getR_id(), calendar.getTime());
         }

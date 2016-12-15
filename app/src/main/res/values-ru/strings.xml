@@ -11,7 +11,7 @@
     <string name="logout_title">Выйти</string>
     <string name="no_account_q">Нет аккаунта?</string>
     <string name="personal_bus_row_title">Автобус:</string>
-    <string name="personal_shuttlebus_row_title">\?Маршрутка?:</string>
+    <string name="personal_shuttlebus_row_title">Маршрутка:</string>
     <string name="personal_stats_title">Личная статистика</string>
     <string name="personal_tram_row_title">Трамвай:</string>
     <string name="personal_trolley_row_title">Толлейбус:</string>
