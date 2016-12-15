@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import com.et.R;
 import com.et.auth.Auth;
@@ -55,13 +56,6 @@ public class MenuActivity extends BaseActivity {
             }
         });
 
-        Button testButton = (Button) findViewById(R.id.test_button);
-        testButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MenuActivity.this, TestActivity.class));
-            }
-        });
 
         Button transportStat = (Button) findViewById(R.id.transport_stat_button);
         transportStat.setOnClickListener(new OnClickListener() {
@@ -82,6 +76,13 @@ public class MenuActivity extends BaseActivity {
             }
         });
 
+        Button settingsButton = (Button) findViewById(R.id.setting_button);
+        settingsButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Settings are coming soon", Toast.LENGTH_SHORT).show();
+            }
+        });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_from_menu);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

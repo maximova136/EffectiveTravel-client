@@ -30,8 +30,6 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".gui.SignupActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".gui.TestActivity"
-            android:screenOrientation="portrait"/>
         <activity
             android:name=".gui.PersonalStatsActivity"
             android:label="@string/title_activity_personal_stats"

@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-
 import com.et.R;
 import com.et.api.ApiClient;
 import com.et.response.object.FreqObject;
