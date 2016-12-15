@@ -18,6 +18,8 @@ import com.et.stats.personal.PersonalStatsManager;
 import com.et.stats.transport.TransportStatsManager;
 import com.et.storage.AppSQliteDb;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class AddStatisticsActivity extends BaseActivity {
@@ -26,6 +28,14 @@ public class AddStatisticsActivity extends BaseActivity {
     private RouteObject route;
     private TextView stationTextView;
     private TextView routeTextView;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        timePicker.setIs24HourView(true);
+        timePicker.setCurrentHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+    }
+
     private TransportStatsManager manager;
     private TimePicker timePicker;
     private PersonalStatsManager personalStatsManager;
@@ -78,7 +88,9 @@ public class AddStatisticsActivity extends BaseActivity {
         protected Boolean doInBackground(Void... params) {
             Log.i("NoteSubmit", "Trying to submit note.");
 
-            GregorianCalendar calendar = new GregorianCalendar();
+            // TODO: WTF in Calendar
+            Calendar calendar = (Calendar) Calendar.getInstance().clone();
+            //calendar.setTime(new Date());
             calendar.set(GregorianCalendar.HOUR, hours);
             calendar.set(GregorianCalendar.MINUTE, minutes);
 
@@ -88,7 +100,7 @@ public class AddStatisticsActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            return manager.submitNote(station.getS_id(), route.getR_id(), calendar.getTime());
+            return manager.submitNote(station.getS_id(), route.getR_id(), new Date());
         }
 
         @Override
