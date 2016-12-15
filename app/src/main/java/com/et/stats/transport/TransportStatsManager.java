@@ -26,7 +26,8 @@ public class TransportStatsManager implements ITransportStatsManager {
     public StatisticsObject getStats(int s_id, int r_id) {
         StatisticsObject stats =  cache.load(s_id, r_id);
 
-        if(stats == null || stats.expires == null || stats.expires.before(new Date())) {
+        // TODO: remove true
+        if(true || stats == null || stats.expires == null || stats.expires.before(new Date())) {
             try {
                 stats = fetcher.fetch(s_id, r_id);
                 cache.save(s_id, r_id, stats);

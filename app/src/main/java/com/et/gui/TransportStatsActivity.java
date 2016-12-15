@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
@@ -19,6 +21,8 @@ import android.widget.TextView;
 import com.et.R;
 import com.et.api.ApiClient;
 import com.et.response.object.FreqObject;
+import com.et.response.object.RouteObject;
+import com.et.response.object.StationObject;
 import com.et.stats.transport.ITransportStatsManager;
 import com.et.stats.transport.TransportStatsManager;
 import com.et.storage.AppSQliteDb;
@@ -48,6 +52,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -96,8 +101,8 @@ public class TransportStatsActivity extends BaseActivity {
         super(true);
     }
 
-    private int s_id;
-    private int r_id;
+    private StationObject station;
+    private RouteObject route;
     private TextView stationTextView;
     private TextView routeTextView;
 
@@ -120,88 +125,22 @@ public class TransportStatsActivity extends BaseActivity {
         manager = new TransportStatsManager(ApiClient.instance(), AppSQliteDb.getInstance());
 
         setContentView(R.layout.activity_transport_stats);
-        s_id = getIntent().getIntExtra("S_ID", -1);
-        r_id = getIntent().getIntExtra("R_ID", -1);
+        station = getIntent().getParcelableExtra("STATION");
+        route = getIntent().getParcelableExtra("ROUTE");
 
         stationTextView = (TextView) findViewById(R.id.station);
         routeTextView = (TextView) findViewById(R.id.route);
-        stationTextView.setText("S_ID - "+s_id);
-        routeTextView.setText("ROUTE - " + r_id);
+        stationTextView.setText("STATION - "+ station.getTitle());
+        routeTextView.setText("ROUTE - " + route.getTitle() + "(" + route.getTransport_type() + ")");
 
         //get current day of week
         String dayOfTheWeek = new SimpleDateFormat("EEEE").format(Calendar.getInstance().getTime()).toLowerCase();
 
+        StatisticsLoadTask mStatisticsLoadTask = new StatisticsLoadTask(dayOfTheWeek);
+        mStatisticsLoadTask.execute((Void) null);
+
 /*
-        if (dayOfTheWeek == "friday"){
-            statistics = manager.getStats(s_id, r_id).getFridayFreq();
-        } else if (dayOfTheWeek == "saturday" || dayOfTheWeek == "sunday"){
-            statistics = manager.getStats(s_id, r_id).getWeekendFreq();
-        } else {
-            statistics = manager.getStats(s_id, r_id).getWeekdaysFreq();
-        }
 */
-        //graphics steps
-        //first - create view
-        HorizontalBarChart chart = (HorizontalBarChart) findViewById(R.id.chart);
-
-        //second - Adding data
-        //you need to create list of Entry type
-        List <BarEntry> entries = new ArrayList<BarEntry>();
-
-        //some data;
-        float a[] = {0.3f, 0.67f, 0.95f};
-        int j = 0;
-        String labels[] = new String [statistics.size()];
-        //add coordinates Entry(getValueX(), getValueY());
-
-        //string - time, float - probability
-        for (int i = 0; i < statistics.size() ; i++){
-            entries.add(new BarEntry(i, statistics.get(i).getCount()));
-            labels[i] = statistics.get(i).getTime();
-            //labels[i] = "7:"+i*5;
-            //labels[i] = (i%2 == 0 ? "pidor" : "ebuchij");
-            //if (j == 3) j = 0;
-        }
-
-        //thirdly (LAST STEP)
-        //you need to add *DataSet to *Data object(s)
-        BarDataSet set = new BarDataSet(entries, "Statistics");
-        set.setColor(Color.parseColor("#5482ca")); // ColorPrimary
-
-        set.setStackLabels(labels);
-
-        set.setLabel("ЕБУЧИЙ АНДРОИД");
-
-        BarData data = new BarData(set);
-
-        //data.setHighlightEnabled(false); //чтобы не нажимались графики. но без этого выглядит грустно
-        //data.setBarWidth(0.1f);
-        //data.setDrawValues(true);
-
-        chart.setData(data);
-        chart.getXAxis().setValueFormatter(new LabelFuckingFormatter(labels));
-
-        //it seems that it doesn't work :(
-        chart.getAxisLeft().setDrawGridLines(false);
-        chart.getXAxis().setDrawGridLines(false);
-        chart.setDrawGridBackground(false);
-
-//        chart.setDrawGridBackground(false); //don't know for what  but pls DO NOT DELETE IT
-        chart.setFitBars(true);
-        chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
-        chart.setMaxVisibleValueCount(5);
-        //-30!!!!!!!!!!!!!
-        chart.moveViewTo(0,getTimeToX(), YAxis.AxisDependency.LEFT);
-
-        //chart.moveViewTo(28f, 0f, chart.getAxisLeft().AxisDependency());
-        /////!!!!!!///
-        //here we will use getTimeToX() instead of argument!!!111!!!
-        /////!!!!!!///
-
-        chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
-        chart.setMaxVisibleValueCount(5);
-
-        chart.invalidate(); //refresh
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_from_TS);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -213,5 +152,104 @@ public class TransportStatsActivity extends BaseActivity {
 
             }
         });
+    }
+
+    public class StatisticsLoadTask extends AsyncTask<Void, Void, Boolean> {
+
+        String day;
+
+        StatisticsLoadTask(String day) {
+            this.day = day;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Log.i("StatisticsLoad", "Trying to load statistics.");
+
+            if (day == "friday"){
+                statistics = manager.getStats(station.getS_id(), route.getR_id()).getFridayFreq();
+            } else if (day == "saturday" || day == "sunday"){
+                statistics = manager.getStats(station.getS_id(), route.getR_id()).getWeekendFreq();
+            } else {
+                statistics = manager.getStats(station.getS_id(), route.getR_id()).getWeekdaysFreq();
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            Log.i("StatisticsLoad", "Statistics was loaded");
+
+            System.out.println("STATISTICS="+statistics);
+
+            //graphics steps
+            //first - create view
+            HorizontalBarChart chart = (HorizontalBarChart) findViewById(R.id.chart);
+
+            //second - Adding data
+            //you need to create list of Entry type
+            List <BarEntry> entries = new ArrayList<BarEntry>();
+
+            //some data;
+            float a[] = {0.3f, 0.67f, 0.95f};
+            int j = 0;
+            String labels[] = new String [statistics.size()];
+            //add coordinates Entry(getValueX(), getValueY());
+
+            //string - time, float - probability
+            for (int i = 0; i < statistics.size() ; i++){
+                entries.add(new BarEntry(i, statistics.get(i).getCount()));
+                labels[i] = statistics.get(i).getTime();
+                //labels[i] = "7:"+i*5;
+                //labels[i] = (i%2 == 0 ? "pidor" : "ebuchij");
+                //if (j == 3) j = 0;
+            }
+
+            //thirdly (LAST STEP)
+            //you need to add *DataSet to *Data object(s)
+            BarDataSet set = new BarDataSet(entries, "Statistics");
+            set.setColor(Color.parseColor("#5482ca")); // ColorPrimary
+
+            set.setStackLabels(labels);
+
+            set.setLabel("ЕБУЧИЙ АНДРОИД");
+
+            BarData data = new BarData(set);
+
+            //data.setHighlightEnabled(false); //чтобы не нажимались графики. но без этого выглядит грустно
+            //data.setBarWidth(0.1f);
+            //data.setDrawValues(true);
+
+            chart.setData(data);
+            chart.getXAxis().setValueFormatter(new LabelFuckingFormatter(labels));
+
+            //it seems that it doesn't work :(
+            chart.getAxisLeft().setDrawGridLines(false);
+            chart.getXAxis().setDrawGridLines(false);
+            chart.setDrawGridBackground(false);
+
+//        chart.setDrawGridBackground(false); //don't know for what  but pls DO NOT DELETE IT
+            chart.setFitBars(true);
+            chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
+            chart.setMaxVisibleValueCount(5);
+            //-30!!!!!!!!!!!!!
+            chart.moveViewTo(0,getTimeToX(), YAxis.AxisDependency.LEFT);
+
+            //chart.moveViewTo(28f, 0f, chart.getAxisLeft().AxisDependency());
+            /////!!!!!!///
+            //here we will use getTimeToX() instead of argument!!!111!!!
+            /////!!!!!!///
+
+            chart.setVisibleXRangeMaximum(10f); //is set AFTER setting data
+            chart.setMaxVisibleValueCount(5);
+
+            chart.invalidate(); //refresh
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
     }
 }

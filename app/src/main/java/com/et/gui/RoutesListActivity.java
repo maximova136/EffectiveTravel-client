@@ -79,8 +79,9 @@ public class RoutesListActivity extends BaseActivity {
                 } else {
                     intent = new Intent(RoutesListActivity.this, AddStatisticsActivity.class);
                 }
-                intent.putExtra("S_ID", station.getS_id());
-                intent.putExtra("R_ID", route.getR_id());
+
+                intent.putExtra("STATION", station);
+                intent.putExtra("ROUTE", route);
                 intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
