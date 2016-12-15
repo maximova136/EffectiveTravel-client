@@ -4,9 +4,13 @@ import com.et.api.IApiClient;
 import com.et.exception.api.InsuccessfulResponseException;
 import com.et.exception.api.RequestFailedException;
 import com.et.response.object.RouteObject;
+import com.et.response.object.StationObject;
 import com.et.storage.ILocalStorage;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Route;
 
 
 public class TransportRoutes implements IRouteProvider {
@@ -53,5 +57,29 @@ public class TransportRoutes implements IRouteProvider {
     @Override
     public List<RouteObject> getAll() {
         return routes;
+    }
+
+    @Override
+    public RouteObject getRouteById(int rId) {
+        for(RouteObject r : routes) {
+            if(r.getR_id() == rId)
+                return r;
+        }
+        return null;
+    }
+
+    @Override
+    public List<RouteObject> getRoutesForStation(StationObject station) {
+        ArrayList<RouteObject> filteredRoutes = new ArrayList<>();
+        List<Integer> routesForStation = station.getRoutes();
+
+        for(RouteObject route : routes) {
+            Integer rId = new Integer(route.getR_id());
+            if(routesForStation.contains(rId)) {
+                filteredRoutes.add(route);
+            }
+        }
+
+        return filteredRoutes;
     }
 }

@@ -5,8 +5,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class StationObject implements Parcelable {
+import java.util.List;
+
+public class StationObject {
     protected int s_id;
     protected String title;
+    protected List<Integer> routes;
 
     public StationObject() {}
 
@@ -50,4 +54,16 @@ public class StationObject implements Parcelable {
             return new StationObject[size];
         }
     };
+
+    public List<Integer> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(List<Integer> routes) {
+        this.routes = routes;
+    }
+
+    public String toString() {
+        return "[" + s_id + "] " + title + " {" + routes.toString() + "}";
+    }
 }

@@ -23,7 +23,7 @@
         android:gravity="center"
         android:textColor="@android:color/black"
         android:textAllCaps="true"
-        android:text="Select a route"
+        android:text="@string/route_main_title"
         android:textSize="24sp" />
 
     <EditText
@@ -32,7 +32,7 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/search_field"
-        android:hint="Search route"
+        android:hint="@string/route_search_title"
         android:textSize="22sp" />
 
     <ListView

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_register">Создать аккаунт</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_sign_in">Войти</string>
+    <string name="action_sign_in_short">Войти</string>
+    <string name="error_field_required">Это поле обязательно</string>
+    <string name="error_invalid_password">Пароль слишком короткий</string>
+    <string name="error_invalid_email">Некорректный e-mail</string>
+    <string name="error_incorrect_password">Неверный пароль</string>
+    <string name="logout_title">Выйти</string>
+    <string name="no_account_q">Нет аккаунта?</string>
+    <string name="personal_bus_row_title">Автобус:</string>
+    <string name="personal_shuttlebus_row_title">\?Маршрутка?:</string>
+    <string name="personal_stats_title">Личная статистика</string>
+    <string name="personal_tram_row_title">Трамвай:</string>
+    <string name="personal_trolley_row_title">Толлейбус:</string>
+    <string name="preferences_file_key"></string>
+    <string name="prompt_login">Логин</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="route_type_title">Тип</string>
+    <string name="settings">Настройки</string>
+    <string name="station_title">Остановка</string>
+    <string name="title_activity_login">Вход</string>
+    <string name="title_activity_personal_stats">Личная статистика</string>
+    <string name="transport_stats_title">Транспортная статистика</string>
+    <string name="route_main_title">Выберете маршрут</string>
+    <string name="route_search_title">Поиск маршрута...</string>
+    <string name="station_main_title">Выберете остановку</string>
+    <string name="station_search_title">Поиск остановки...</string>
+    <string name="personal_reset">Сбросить</string>
+    <string name="personal_reset_description">Вы уверены, что хотите сбросить вашу личную статистику поездок?</string>
+    <string name="personal_reset_title">Сброс личной статистики</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+</resources>

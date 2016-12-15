@@ -14,7 +14,7 @@ import com.et.stats.transport.TransportStatsCache;
 
 public class AppDbHelper extends SQLiteOpenHelper {
     // DB
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "EffectiveTravel_001.db";
 
     // =============================================================================================
@@ -49,12 +49,14 @@ public class AppDbHelper extends SQLiteOpenHelper {
         public static final String TABLE_NAME            = StationsStorage.COLLECTION_NAME;
         public static final String COLUMN_S_ID           = StationsStorage.S_ID_KEY;
         public static final String COLUMN_TITLE          = StationsStorage.TITLE_KEY;
+        public static final String COLUMN_ROUTES         = StationsStorage.ROUTES_KEY;
     }
     // SQL Create query
     public static final String SQL_CREATE_STATION_ENTRIES = "CREATE TABLE " + StationEntry.TABLE_NAME + " ( " +
 //            StationEntry._ID + " INTEGER PRIMARY KEY, " +
             StationEntry.COLUMN_S_ID  + " TEXT, " +
-            StationEntry.COLUMN_TITLE + " TEXT )";
+            StationEntry.COLUMN_TITLE + " TEXT, " +
+            StationEntry.COLUMN_ROUTES+ " TEXT )";
     // SQL Drop query
     public static final String SQL_DROP_STATION_ENTRIES = "DROP TABLE IF EXISTS " + StationEntry.TABLE_NAME;
     // =============================================================================================

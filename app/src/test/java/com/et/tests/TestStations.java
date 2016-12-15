@@ -122,6 +122,8 @@ public class TestStations {
             StationObject r = new StationObject();
             r.setS_id(Integer.parseInt(values.get(StationsStorage.S_ID_KEY)));
             r.setTitle(values.get(StationsStorage.TITLE_KEY));
+            r.setRoutes(StationsStorage.stringToRoutesList(values.get(StationsStorage.ROUTES_KEY)));
+
 
             savedList.add(r);
         }
@@ -150,6 +152,7 @@ public class TestStations {
                 HashMap<String, String> item = new HashMap<>();
                 item.put(StationsStorage.S_ID_KEY,  "" + s.getS_id());
                 item.put(StationsStorage.TITLE_KEY, "" + new String(s.getTitle()));
+                item.put(StationsStorage.ROUTES_KEY, StationsStorage.routesListToString(s.getRoutes()));
                 collectionList.add(item);
             }
 
@@ -199,6 +202,11 @@ public class TestStations {
         StationObject s = new StationObject();
         s.setTitle("x77x");
         s.setS_id(222);
+        ArrayList<Integer> routes = new ArrayList<>();
+        routes.add(31);
+        routes.add(42);
+        routes.add(56);
+        s.setRoutes(routes);
         mockLocalStorage.put(s);
 
         assertFalse("Local stations list should not be cleared", mockLocalStorage.clearDbCalled);
@@ -223,6 +231,11 @@ public class TestStations {
         StationObject s = new StationObject();
         s.setS_id(444);
         s.setTitle("foo");
+        ArrayList<Integer> routes = new ArrayList<>();
+        routes.add(31);
+        routes.add(42);
+        routes.add(56);
+        s.setRoutes(routes);
         mockApiClient.put(s);
         mockApiClient.setFailVariant(0);
 
@@ -236,9 +249,11 @@ public class TestStations {
 
         assertTrue("Not the same s_id",  loadedStation.getS_id() == s.getS_id());
         assertTrue("Not the same title", loadedStation.getTitle().equals(s.getTitle()));
+        assertTrue("Not the same title", loadedStation.getRoutes().equals(s.getRoutes()));
 
         assertTrue("Not the same s_id",  savedStation.getS_id() == s.getS_id());
         assertTrue("Not the same title", savedStation.getTitle().equals(s.getTitle()));
+        assertTrue("Not the same title", savedStation.getRoutes().equals(s.getRoutes()));
     }
 
 
