@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.et.R;
 import com.et.api.ApiClient;
@@ -69,7 +70,8 @@ public class AddStatisticsActivity extends BaseActivity {
                 NoteSubmitTask mNoteSubmitTask = new NoteSubmitTask(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
                 mNoteSubmitTask.execute((Void) null);
 
-                Snackbar.make(view, "Data has been sent", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Toast.makeText(getApplicationContext(), "Data has been sent", Toast.LENGTH_SHORT).show();
+                //Snackbar.make(view, "Data has been sent", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
     }

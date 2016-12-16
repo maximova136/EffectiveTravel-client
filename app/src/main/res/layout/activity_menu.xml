@@ -44,7 +44,7 @@
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="40dp"
+                android:minHeight="70dp"
                 android:layout_columnSpan="2" />
 
             <Button
@@ -62,13 +62,6 @@
                 android:layout_gravity="end"
                 android:id="@+id/logout_button"
                 android:background="@drawable/log_out_shadow" />
-
-            <Button
-                android:text="TEST"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/test_button"
-                android:layout_gravity="center_vertical|center" />
 
         </GridLayout>
 

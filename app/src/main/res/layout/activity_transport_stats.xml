@@ -27,13 +27,15 @@
                 android:layout_height="30dp"
                 android:id="@+id/station"
                 android:hint="Station"
-                android:clickable="false" />
+                android:clickable="false"
+                android:gravity="center" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:id="@+id/route"
                 android:hint="Route"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:gravity="center" />
 
             <com.github.mikephil.charting.charts.HorizontalBarChart
                 android:id="@+id/chart"
@@ -46,10 +48,10 @@
             android:id="@+id/fab_add_from_TS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_margin="1dp"
             app:srcCompat="@android:drawable/ic_menu_add"
             android:layout_gravity="bottom|end"
-            />
+            app:elevation="1dp" />
 
     </android.support.design.widget.CoordinatorLayout>
 
